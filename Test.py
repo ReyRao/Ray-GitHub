@@ -1,4 +1,4 @@
-import time
+#!usr/bin/python3
 
 # d = [0,1,2,3,4,5,6,7,8,9]
 # print(d[:4])
@@ -490,3 +490,8 @@ import time
 # print(id(x))
 # x = 'wat'
 # print(id(x))
+
+sF = [0.8, 0.9, 1.0]
+mN = [1, 2, 3, 4]
+for x, y in[(x, y) for x in sF for y in mN]:
+    print(x, y)
