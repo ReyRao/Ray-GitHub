@@ -20,23 +20,29 @@ for file_name in files:
 	dfile_path = os.path.join(path, file_name)
 	data = pd.read_csv(dfile_path)
 	df = pd.DataFrame(data)
-	# print(df.iloc[0, first_Y:n_Y], '\n', df.iloc[0, first_Y:n_Y].shape)
 	for row in range(df.shape[0]-1):
+		# fetch the minimum value between X0 and X1(or Y0 and Y1)
+		# for Y line
 		for i in range(51):
 			if df.iloc[row, first_Y+i] >= df.iloc[row, second_Y+i]:
 				min_list.append(df.iloc[row, second_Y+i])
 			else:
 				min_list.append(df.iloc[row, first_Y+i])
-
+		
+		# for X line
 		for j in range(38):
 			if df.iloc[row, first_X+j] >= df.iloc[row, second_X+j]:
 				min_list.append(df.iloc[row, second_X+j])
 			else:
 				min_list.append(df.iloc[row, first_X+j])
+
+		# fetch the maximun noise value of the whole panel
 		max_list.append(max(min_list))
 		min_list = []
-	# print(max_list)
+
 	x = np.linspace(1, df.shape[0]-1, df.shape[0]-1)
+
+	# spec 8 * 15(15 is config value)
 	plt.plot(x, [120]*len(max_list), c='r')
 	plt.plot(x, max_list)
 	plt.show()
