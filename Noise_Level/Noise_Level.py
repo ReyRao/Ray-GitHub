@@ -48,7 +48,7 @@ for file_name in files:
 	print(f'{file_name[:-4]}:\nConsecutive Noise: {count}')
 
 	# plot
-	plt.figure(figsize=(14, 5))
+	plt.figure(figsize=(14, 6))
 	plt.tight_layout()
 	x = np.linspace(1, df.shape[0]-1, df.shape[0]-1)
 
@@ -58,3 +58,4 @@ for file_name in files:
 	plt.title(file_name[:-4])
 	plt.ylabel("Noise Level(a.u.)")
 	plt.show()
+	max_list = []
