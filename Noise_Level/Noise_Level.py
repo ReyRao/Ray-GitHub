@@ -40,9 +40,21 @@ for file_name in files:
 		max_list.append(max(min_list))
 		min_list = []
 
+	# caculate consecutive point
+	count = 0
+	for i in range(len(max_list)-1):
+		if max_list[i+1] > 120 and max_list[i] > 120:
+			count += 1
+	print(f'Consecutive Noise: {count}')
+
+	# plot
+	plt.figure(figsize=(16, 6))
+	plt.tight_layout()
 	x = np.linspace(1, df.shape[0]-1, df.shape[0]-1)
 
 	# spec 8 * 15(15 is config value)
 	plt.plot(x, [120]*len(max_list), c='r')
-	plt.plot(x, max_list)
+	plt.plot(x, max_list, linewidth=0.5)
+	plt.title(file_name[:-4])
+	plt.ylabel("Noise Level(a.u.)")
 	plt.show()
