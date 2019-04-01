@@ -496,4 +496,4 @@
 # for x, y in[(x, y) for x in sF for y in mN]:
 #     print(x, y)
 import numpy as np
-print(np.linspace(1, 10, 10))
+print([10]*5)

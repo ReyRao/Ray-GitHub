@@ -37,5 +37,6 @@ for file_name in files:
 		min_list = []
 	# print(max_list)
 	x = np.linspace(1, df.shape[0]-1, df.shape[0]-1)
+	plt.plot(x, [120]*len(max_list), c='r')
 	plt.plot(x, max_list)
 	plt.show()
