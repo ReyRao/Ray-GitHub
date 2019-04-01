@@ -57,6 +57,5 @@ for file_name in files:
 	plt.plot(x, max_list, linewidth=0.5)
 	plt.title(file_name[:-4])
 	plt.ylabel("Noise Level(a.u.)")
-	
 	max_list = []
 plt.show()
