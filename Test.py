@@ -491,7 +491,9 @@
 # x = 'wat'
 # print(id(x))
 
-sF = [0.8, 0.9, 1.0]
-mN = [1, 2, 3, 4]
-for x, y in[(x, y) for x in sF for y in mN]:
-    print(x, y)
+# sF = [0.8, 0.9, 1.0]
+# mN = [1, 2, 3, 4]
+# for x, y in[(x, y) for x in sF for y in mN]:
+#     print(x, y)
+import numpy as np
+print(np.linspace(1, 10, 10))
