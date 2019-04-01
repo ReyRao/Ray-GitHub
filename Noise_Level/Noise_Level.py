@@ -45,10 +45,10 @@ for file_name in files:
 	for i in range(len(max_list)-1):
 		if max_list[i+1] > 120 and max_list[i] > 120:
 			count += 1
-	print(f'Consecutive Noise: {count}')
+	print(f'{file_name[:-4]}:\nConsecutive Noise: {count}')
 
 	# plot
-	plt.figure(figsize=(16, 6))
+	plt.figure(figsize=(14, 5))
 	plt.tight_layout()
 	x = np.linspace(1, df.shape[0]-1, df.shape[0]-1)
 
