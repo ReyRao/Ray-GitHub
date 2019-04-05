@@ -495,5 +495,18 @@
 # mN = [1, 2, 3, 4]
 # for x, y in[(x, y) for x in sF for y in mN]:
 #     print(x, y)
-import numpy as np
-print([10]*5)
+
+#########################################################
+# import numpy as np
+# print([10]*5)
+
+##################################################
+import keras
+from keras.datasets import cifar10
+import matplotlib.pyplot as plt
+
+(x_train, y_train), (x_test, y_test) = cifar10.load_data()
+print(x_train.shape, x_test.shape, y_train.shape, y_test.shape)
+
+plt.imshow(x_test[0])
+plt.show()
