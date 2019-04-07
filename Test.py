@@ -491,22 +491,30 @@
 # x = 'wat'
 # print(id(x))
 
-# sF = [0.8, 0.9, 1.0]
-# mN = [1, 2, 3, 4]
-# for x, y in[(x, y) for x in sF for y in mN]:
-#     print(x, y)
+sF = [0.8, 0.9, 1.0]
+mN = [1, 2, 3, 4]
+for x, y in [(x, y) for x in sF for y in mN]:
+    print(x, y)
+print(sF, mN)
 
+print('\n')
+import numpy as np
+sFa = np.asarray(sF)
+mNa = np.asarray(mN)
+for x, y in [(x, y) for x in sFa for y in mNa]:
+    print(x, y)
+print(sFa, mNa)
 #########################################################
 # import numpy as np
 # print([10]*5)
 
 ##################################################
-import keras
-from keras.datasets import cifar10
-import matplotlib.pyplot as plt
+# import keras
+# from keras.datasets import cifar10
+# import matplotlib.pyplot as plt
 
-(x_train, y_train), (x_test, y_test) = cifar10.load_data()
-print(x_train.shape, x_test.shape, y_train.shape, y_test.shape)
+# (x_train, y_train), (x_test, y_test) = cifar10.load_data()
+# print(x_train.shape, x_test.shape, y_train.shape, y_test.shape)
 
-plt.imshow(x_test[0])
-plt.show()
+# plt.imshow(x_test[0])
+# plt.show()
