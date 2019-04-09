@@ -492,18 +492,20 @@
 # print(id(x))
 
 sF = [0.8, 0.9, 1.0]
-mN = [1, 2, 3, 4]
-for x, y in [(x, y) for x in sF for y in mN]:
-    print(x, y)
-print(sF, mN)
-
-print('\n')
+mN = [1, 2, 3]
+# for x, y in [(x, y) for x in sF for y in mN]:
+    # print(x, y)
+# print(sF, mN)
+print(sF*mN)
+# print('\n')
 import numpy as np
 sFa = np.asarray(sF)
 mNa = np.asarray(mN)
-for x, y in [(x, y) for x in sFa for y in mNa]:
-    print(x, y)
-print(sFa, mNa)
+# for x, y in [(x, y) for x in sFa for y in mNa]:
+    # print(x, y)
+# print(sFa, mNa)
 #########################################################
 # import numpy as np
 # print([10]*5)
+
+print(sFa*mNa)
