@@ -534,7 +534,6 @@
 
 def digital_root(n):
     for i in str(n):
-        print(len(str(n)))
-        return i
+        print(i)
 
 print(digital_root(199))
