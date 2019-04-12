@@ -488,19 +488,19 @@
 # )
 # x = 3
 # print(id(x))
-# x = 'wat'
-# print(id(x))
+# # x = 'wat'
+# # print(id(x))
 
-sF = [0.8, 0.9, 1.0]
-mN = [1, 2, 3]
-# for x, y in [(x, y) for x in sF for y in mN]:
-    # print(x, y)
-# print(sF, mN)
-print(sF*mN)
-# print('\n')
-import numpy as np
-sFa = np.asarray(sF)
-mNa = np.asarray(mN)
+# sF = [0.8, 0.9, 1.0]
+# mN = [1, 2, 3]
+# # for x, y in [(x, y) for x in sF for y in mN]:
+#     # print(x, y)
+# # print(sF, mN)
+# print(sF*mN)
+# # print('\n')
+# import numpy as np
+# sFa = np.asarray(sF)
+# mNa = np.asarray(mN)
 # for x, y in [(x, y) for x in sFa for y in mNa]:
     # print(x, y)
 # print(sFa, mNa)
@@ -508,4 +508,33 @@ mNa = np.asarray(mN)
 # import numpy as np
 # print([10]*5)
 
-print(sFa*mNa)
+
+# s = 'testing'
+# l = len(s)
+# try:
+#     position = l/2
+#     if l%2 != 0:
+#         print(s[int(position-0.5)])
+#     else:
+#         print(s[int(position-1):int(position+1)])
+# except:
+#     print('empty string')
+
+# n = 1810
+# result = 0
+# if n//10 == 0:
+#     print(n)
+# while n//10 != 0:
+#     result += n%10
+#     n = n//10
+#     print(result)
+#     if n//10  == 0:
+#         result += n%10
+#         print(result)
+
+def digital_root(n):
+    for i in str(n):
+        print(len(str(n)))
+        return i
+
+print(digital_root(199))
