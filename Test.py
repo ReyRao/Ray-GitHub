@@ -532,10 +532,15 @@
 #         result += n%10
 #         print(result)
 
-def digital_root(n):
-    for i in str(n):
-        print(i)
+# def digital_root(n):
+#     for i in str(n):
+#         print(i)
 
-print(digital_root(199))
+# print(digital_root(199))
 
-print("alkhf")
+# import re
+# test_string = 'aabb abb aab abbb'
+# pattern = 'a*b'
+# ans=re.findall(pattern,test_string)
+# print(ans)
+

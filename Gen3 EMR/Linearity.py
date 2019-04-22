@@ -88,5 +88,6 @@ def main():
     x, y = emr.row_sep()
     emr.np_linearity(x, y)
 
+
 if __name__ == "__main__":
     main()
