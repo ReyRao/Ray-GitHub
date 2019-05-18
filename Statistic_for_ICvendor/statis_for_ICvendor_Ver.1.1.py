@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 #--- for progressbar ---#
 def dosomework():
     time.sleep(0.01)
+
+
 #--- to align and build data ---#
 def make_df(fp, ceiling, ground):
     with open(fp, "r") as f:
@@ -24,8 +26,10 @@ def make_df(fp, ceiling, ground):
         df = df[0].str.split(",", expand = True)
         df = pd.DataFrame(df.loc[:, 1:51])
         for i in range(df.shape[1]):
-                df[i+1] = pd.to_numeric(df[i+1])
+            df[i+1] = pd.to_numeric(df[i+1])
     return df
+
+
 #--- to test the shape of Cm and hCm ---#
 def pre_test_df(df):
         if df.shape[0] != 38 and df.shape[1] != 51:
@@ -39,6 +43,8 @@ def pre_test_df(df):
         else:
             switch = True
         return switch
+
+
 #--- row's from 0 to 37, total 38 rows ---#
 def z_row(df, stack, row):
     row_stack = []
@@ -48,12 +54,18 @@ def z_row(df, stack, row):
         for i in range(1, num):
             row_stack[j].append(stack[row + df.shape[0]*i, j])
     return row_stack
+
+
 #--- average value ---#
 def mean_(list):
     return round(sum(list) / len(list), 2)
+
+
 #--- standard deviation ---#
 def std_(list):
     return round(math.sqrt(sum((list - mean_(list)) ** 2) / (len(list)-1)), 3)
+
+
 #--- transform list to df and reshape to (38, 51) ---#
 def list_to_pd(list):
     columns_ = ["Y" + str(x) for x in range(51)]
@@ -62,9 +74,12 @@ def list_to_pd(list):
     list = list.reshape(Cm_df.shape)
     list = pd.DataFrame(list, index = index_, columns = columns_)
     return list
+
+
 #--- seperate line ---#
 def title(str):
     return pd.DataFrame(np.array(["Distribution"]), columns=[" "], index=[str])
+
 
 # Cm_ceiling = input("Please enter the first row of full-charge Cm: ")
 Cm_ceiling = 66
@@ -128,7 +143,7 @@ if file_switch == True:
             print(f"{filename} min() arg is an empty sequence")
             err_list.append(f"{filename} min() arg is an empty sequence")
             switch = False
-        
+
         if switch == True:
             good_filename.append(filename)
             cnt += 1

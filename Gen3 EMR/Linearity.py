@@ -28,7 +28,7 @@ class Coordinate():
         row = [self.x, self.y]
         index_row.append(0)
         for index in range(len(self.x)-1):
-            if abs(self.x[index+1] - self.xf[index]) > th or abs(self.y[index+1] - self.y[index]) > th:
+            if abs(self.x[index+1] - self.x[index]) > th or abs(self.y[index+1] - self.y[index]) > th:
                 index_row.append(index+1)
         for j in index_row[1:]:
             if self.delete_num >= j:
