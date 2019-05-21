@@ -1,7 +1,11 @@
 # !usr/bin/python3
-# -*- coding: UTF-8 -*-
+# using condition:
+#   1. data: 38 rows;51 columns
+#   2. data position at: No. 66 & 116 rows
+#
 # Rey
 # Version: 1.1
+##############################################################################
 
 import numpy as np
 import pandas as pd
@@ -57,28 +61,28 @@ def z_row(df, stack, row):
 
 
 #--- average value ---#
-def mean_(list):
-    return round(sum(list) / len(list), 2)
+def mean_(_list):
+    return round(sum(_list) / len(_list), 2)
 
 
 #--- standard deviation ---#
-def std_(list):
-    return round(math.sqrt(sum((list - mean_(list)) ** 2) / (len(list)-1)), 3)
+def std_(_list):
+    return round(math.sqrt(sum((_list - mean_(_list)) ** 2) / (len(_list)-1)), 3)
 
 
 #--- transform list to df and reshape to (38, 51) ---#
-def list_to_pd(list):
+def list_to_pd(_list):
     columns_ = ["Y" + str(x) for x in range(51)]
     index_ = ["X" + str(x) for x in range(38)]
-    list = np.asarray(list)
-    list = list.reshape(Cm_df.shape)
-    list = pd.DataFrame(list, index = index_, columns = columns_)
-    return list
+    _list = np.asarray(_list)
+    _list = _list.reshape(Cm_df.shape)
+    _list = pd.DataFrame(_list, index = index_, columns = columns_)
+    return _list
 
 
 #--- seperate line ---#
-def title(str):
-    return pd.DataFrame(np.array(["Distribution"]), columns=[" "], index=[str])
+def title(_str):
+    return pd.DataFrame(np.array(["Distribution"]), columns=[" "], index=[_str])
 
 
 # Cm_ceiling = input("Please enter the first row of full-charge Cm: ")
@@ -95,9 +99,9 @@ err_list = []
 Cm_stack = np.zeros(shape=(38,51))
 hCm_stack = np.zeros(shape=(38,51))
 
-file_path = "./Python/log/"
-Statistics_data_path = "./Python/Statistics_data.csv"
-err_data_path = "./Python/error.csv"
+file_path = "./log/"
+Statistics_data_path = "./Statistic_for_ICvendor/Statistics_data.csv"
+err_data_path = "./Statistic_for_ICvendor/error.csv"
 files = os.listdir(file_path)
 
 file_switch = True
@@ -239,9 +243,9 @@ hCm_std_stack_toal_data = np.c_[x_line, y_line, hCm_std_stack_data]
 fig = plt.figure(figsize=plt.figaspect(0.8))
 ax = fig.add_subplot(2, 2, 1, projection='3d')
 ax.scatter(Cm_mean_stack_total_data[:,0],
-            Cm_mean_stack_total_data[:,1],
-            Cm_mean_stack_total_data[:,2],
-            c='r', s=10)
+           Cm_mean_stack_total_data[:,1],
+           Cm_mean_stack_total_data[:,2],
+           c='r', s=10)
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.title("Cm Mean")
@@ -251,9 +255,9 @@ ax.axis('tight')
 
 ax = fig.add_subplot(2, 2, 2, projection='3d')
 ax.scatter(hCm_mean_stack_total_data[:,0],
-            hCm_mean_stack_total_data[:,1],
-            hCm_mean_stack_total_data[:,2],
-            c='y', s=10)
+           hCm_mean_stack_total_data[:,1],
+           hCm_mean_stack_total_data[:,2],
+           c='y', s=10)
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.title("Half-charge Cm Mean")
@@ -263,9 +267,9 @@ ax.axis('tight')
 
 ax = fig.add_subplot(2, 2, 3, projection='3d')
 ax.scatter(Cm_std_stack_toal_data[:,0],
-            Cm_std_stack_toal_data[:,1],
-            Cm_std_stack_toal_data[:,2],
-            c='b', s=10)
+           Cm_std_stack_toal_data[:,1],
+           Cm_std_stack_toal_data[:,2],
+           c='b', s=10)
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.title("Cm Standard Deviation")
@@ -275,9 +279,9 @@ ax.axis('tight')
 
 ax = fig.add_subplot(2, 2, 4, projection='3d')
 ax.scatter(hCm_std_stack_toal_data[:,0],
-            hCm_std_stack_toal_data[:,1],
-            hCm_std_stack_toal_data[:,2],
-            c='g', s=10)
+           hCm_std_stack_toal_data[:,1],
+           hCm_std_stack_toal_data[:,2],
+           c='g', s=10)
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.title("Half-charge Cm Standard Deviation")

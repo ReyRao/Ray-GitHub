@@ -1,11 +1,15 @@
 # !usr/bin/python -tt
 # -*- coding: UTF-8 -*-
 # Rey
-# Version: 1.1
+# Version: 1.2
 
 import numpy as np
 import pandas as pd
-import os, sys, time, csv, math
+import os
+import sys
+import time
+import csv
+import math
 from progressbar import *
 from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
@@ -13,6 +17,7 @@ import matplotlib.pyplot as plt
 #--- for progressbar ---#
 def dosomework():
     time.sleep(0.01)
+
 #--- to align and build data ---#
 def make_df(fp, ceiling, ground):
     with open(fp, "r") as f:
@@ -26,6 +31,7 @@ def make_df(fp, ceiling, ground):
         for i in range(df.shape[1]):
                 df[i+1] = pd.to_numeric(df[i+1])
     return df
+
 #--- to test the shape of Cm and hCm ---#
 def pre_test_df(df):
         if df.shape[0] != 38 and df.shape[1] != 51:
@@ -39,6 +45,7 @@ def pre_test_df(df):
         else:
             switch = True
         return switch
+
 #--- row's from 0 to 37, total 38 rows ---#
 def z_row(df, stack, row):
     row_stack = []
@@ -48,23 +55,28 @@ def z_row(df, stack, row):
         for i in range(1, num):
             row_stack[j].append(stack[row + df.shape[0]*i, j])
     return row_stack
+
 #--- average value ---#
-def mean_(list):
-    return round(sum(list) / len(list), 2)
+def mean_(_list):
+    return round(sum(_list) / len(_list), 2)
+
 #--- standard deviation ---#
-def std_(list):
-    return round(math.sqrt(sum((list - mean_(list)) ** 2) / (len(list)-1)), 3)
+def std_(_list):
+    return round(math.sqrt(sum((_list - mean_(_list)) ** 2) / (len(_list)-1)), 3)
+
 #--- transform list to df and reshape to (38, 51) ---#
-def list_to_pd(list):
+def list_to_pd(_list):
     columns_ = ["Y" + str(x) for x in range(51)]
     index_ = ["X" + str(x) for x in range(38)]
-    list = np.asarray(list)
-    list = list.reshape(Cm_df.shape)
-    list = pd.DataFrame(list, index = index_, columns = columns_)
-    return list
+    _list = np.asarray(_list)
+    _list = _list.reshape(Cm_df.shape)
+    _list = pd.DataFrame(_list, index = index_, columns = columns_)
+    return _list
+
 #--- seperate line ---#
-def title(str):
-    return pd.DataFrame(np.array(["Distribution"]), columns=[" "], index=[str])
+def title(_str):
+    return pd.DataFrame(np.array(["Distribution"]), columns=[" "], index=[_str])
+
 #--- to catch the row No. ---#
 def rowNumber(path):
     CmUpper = 0
@@ -95,9 +107,9 @@ err_list = []
 Cm_stack = np.zeros(shape=(38,51))
 hCm_stack = np.zeros(shape=(38,51))
 
-file_path = "./Python/log/"
-Statistics_data_path = "./Python/Statistics_data.csv"
-err_data_path = "./Python/error.csv"
+file_path = "./log/"
+Statistics_data_path = "./Statistic_for_ICvendor/Statistics_data.csv"
+err_data_path = "./Statistic_for_ICvendor/error.csv"
 files = os.listdir(file_path)
 
 file_switch = True
@@ -111,7 +123,6 @@ except:
 widgets = ['Progress: ',Percentage(), ' ', Bar('#'),' ', Timer(),
         ' ', ETA(), ' ', FileTransferSpeed()]
 pbar = ProgressBar(widgets=widgets, maxval=10*len(files)).start()
-
 
 switch = False
 cnt = 0
