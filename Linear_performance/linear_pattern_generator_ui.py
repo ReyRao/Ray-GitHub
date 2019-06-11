@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'linear_pattern_generator.ui'
-#
-# Created by: PyQt5 UI code generator 5.12.2
-#
-# WARNING! All changes made in this file will be lost!
+# usr/bin/python
+# to create linear performance drawing coordinate
 
 import sys
 import numpy as np
+import matplotlib.pyplot as plt
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QDesktopServices
@@ -15,7 +11,7 @@ from PyQt5.QtCore import QUrl
 
 
 class Ui_Form(QtWidgets.QWidget):
-    def __init__(self, width=156200, height=208600, indent=1000, shift=1050, n_line=11):
+    def __init__(self, width=1000, height=2000, indent=0, shift=5, n_line=5):
         QtWidgets.QWidget.__init__(self)
         self.setupUi(self)
 
@@ -141,7 +137,9 @@ class Ui_Form(QtWidgets.QWidget):
         self.edit_indent.setReadOnly(True)
 
         QtWidgets.QMessageBox.about(self, "Heads-up!", "\"Unit\" here should be micrometer!")
-        # self.link = QDesktopServices.openUrl(QUrl('https://youtu.be/xmf-6TYjGuQ'))
+
+        # self.link = QDesktopServices.openUrl(QUrl(
+        #     "https://www.youtube.com/embed/xmf-6TYjGuQ"))
 
     def exitApp(self):
         exit()
@@ -163,7 +161,7 @@ class Ui_Form(QtWidgets.QWidget):
             if self.shift<=0:
                 QtWidgets.QMessageBox.warning(self, "Warning !", "This Value should be positive !")
                 self.edit_shift.setText("Error")
-    
+
     def getNlines(self):
         num, ok = QtWidgets.QInputDialog.getInt(self, "Line's #", "enter lines' #")
         if ok:
@@ -195,7 +193,7 @@ class Ui_Form(QtWidgets.QWidget):
                 self.edit_width.setText("Error")
 
     def defaultWarining(self):
-        # width=156200, height=208600, indent=1000, shift=1050, n_line=11
+        # width=1000, height=2000, indent=0, shift=5, n_line=5
         if self.height==206600:
             QtWidgets.QMessageBox.about(self, "Heads-up!", f"Height is default({208600}).")
         if self.width==154200:
@@ -208,12 +206,18 @@ class Ui_Form(QtWidgets.QWidget):
             QtWidgets.QMessageBox.about(self, "Heads-up!", f"# of line is default({self.n_line}).")
 
     def orthogonalLine(self):
-        self.defaultWarining()
+        # self.defaultWarining()
         if self.height|self.width|self.shift|self.n_line<=0 and self.indent<0:
             QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
             QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
             QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
-            QtWidgets.QMessageBox.warning(self, "Warining !", "It's very important so it pops up three times !")
+            QtWidgets.QMessageBox.warning(self, "Warining !", "It's very important so it pops up three times!!!")
+            self.orthogonal_switch = False
+        if self.n_line%2==0:
+            QtWidgets.QMessageBox.warning(self, "Warning!!!", "!!! # of line should be odd !!!")
+            QtWidgets.QMessageBox.warning(self, "Warning!!!", "!!! # of line should be odd !!!")
+            QtWidgets.QMessageBox.warning(self, "Warning!!!", "!!! # of line should be odd !!!")
+            QtWidgets.QMessageBox.warning(self, "Warining !", "It's very important so it pops up three times!!!")
             self.orthogonal_switch = False
 
         if self.orthogonal_switch == True:
@@ -225,20 +229,65 @@ class Ui_Form(QtWidgets.QWidget):
             y = y - self.centreY
             y_list_p = []
             y_list_n = []
+            pn_shift = b
+            # print(b, "!!!!!!!!!!!!")
 
             # for centre
             for i in range(self.n_line):
                 i += 1
                 y_centre_p = y + self.n_line // 2 * self.shift
-                # y_centre_p = y_centre_p + self.shift
                 y_centre_p = y_centre_p - (i - 1) * self.shift
                 y_centre_n = y_centre_p * -1
                 y_list_p.append(y_centre_p)
                 y_list_n.append(y_centre_n)
             y_list_n = y_list_n[::-1]
+            y_list = []
+            for i in range(len(y_list_p)):
+                y_list.append(y_list_p[i])
+                y_list.append(y_list_n[i])
+            # print(f"y center list: {y_list}\n")
+
+            # for upper
+            x_upper_list_p = []
+            x_upper_list_n = []
+            y_upper_list_p = []
+            y_upper_list_n = []
+            for i in range(self.n_line):
+                i += 1
+                y_upper_p = self.height//2 + self.n_line // 2 * self.shift
+                y_upper_p = y_upper_p - (i - 1) * self.shift
+                b = self.centreX - self.centreX + y_list_p[i-1]
+                y_upper_n = y_upper_p - pn_shift
+                y_upper_list_n.append(y_upper_n)
+                # print(f"orig y_upper_p: {y_upper_p}\nb: {b}\ny_upper_n: {y_upper_n}")
+
+                if abs(y_upper_p)>self.height//2:
+                    y_upper_p = self.height//2
+                    # print(f"modify y_upper_p: {y_upper_p}")
+                    x_upper_p = y_upper_p - b
+                    # print(f"b : {b}")
+                    x_upper_list_p.append(x_upper_p)
+                    y_upper_list_p.append(y_upper_p)
+                else:
+                    # print(f"modify y_upper_p: {y_upper_p}")
+                    x_upper_list_p.append(self.width//2)
+                    y_upper_list_p.append(y_upper_p)
             
-            print(y_list_p, y_list_n)
-            # return y_list_p, y_list_n
+            print(f"x_upper_list_p: {x_upper_list_p}\n\
+y_upper_list_p: {y_upper_list_p}\n\
+y_upper_list_n: {y_upper_list_n}")
+
+
+
+
+            plt.figure(figsize=(6, 9))
+            for i in range(len(y_list)-1):
+                plt.plot([self.width//2, -self.width//2], [y_list[i], y_list[i+1]])
+                plt.plot([-self.width//2, self.width//2], [y_list[i], y_list[i+1]])
+
+            plt.show()
+
+
 
 
 def main():
