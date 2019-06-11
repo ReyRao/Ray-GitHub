@@ -10,6 +10,8 @@ import sys
 import numpy as np
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtCore import QUrl
 
 
 class Ui_Form(QtWidgets.QWidget):
@@ -28,6 +30,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.centreY = self.height / 2
         # self.orthogonalPath = "./Linear_performance/orthogonal.csv"
         self.orthogonal_switch = True
+        self.link = None
         
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -117,7 +120,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.btn_width.setText(_translate("Form", "Set Width"))
         self.btn_indent.setText(_translate("Form", "Set Indent"))
         self.btn_shift.setText(_translate("Form", "Set Shift"))
-        self.btn_n_lines.setText(_translate("Form", "Set # of Lines"))
+        self.btn_n_lines.setText(_translate("Form", "Set # of line"))
         self.btn_orthogonal_pattern.setText(_translate("Form", "Plot Orthogonal Pattern"))
         self.btn_oblique_pattern.setText(_translate("Form", "Plot Oblique Pattern"))
         self.btn_exit.setText(_translate("Form", "Exit"))
@@ -138,12 +141,10 @@ class Ui_Form(QtWidgets.QWidget):
         self.edit_indent.setReadOnly(True)
 
         QtWidgets.QMessageBox.about(self, "Heads-up!", "\"Unit\" here should be micrometer!")
+        # self.link = QDesktopServices.openUrl(QUrl('https://youtu.be/xmf-6TYjGuQ'))
 
     def exitApp(self):
         exit()
-    
-    def gameOfThrones(self):
-        pass
 
     def getIndent(self):
         num, ok = QtWidgets.QInputDialog.getInt(self, "Indent table", "enter indent value")
@@ -167,7 +168,7 @@ class Ui_Form(QtWidgets.QWidget):
         num, ok = QtWidgets.QInputDialog.getInt(self, "Line's #", "enter lines' #")
         if ok:
             self.n_line = num
-            self.edit_n_lines.setText(str(num))
+            self.edit_n_lines.setText(str(self.n_line))
             if self.n_line<=0:
                 QtWidgets.QMessageBox.warning(self, "Warning !", "This Value should be positive !")
                 self.edit_n_lines.setText("Error")
@@ -179,7 +180,7 @@ class Ui_Form(QtWidgets.QWidget):
         num, ok = QtWidgets.QInputDialog.getInt(self, "Height table", "enter height value")
         if ok:
             self.height = num
-            self.edit_height.setText(str(num))
+            self.edit_height.setText(str(self.height))
             if self.height<=0:
                 QtWidgets.QMessageBox.warning(self, "Warning !", "This Value should be positive !")
                 self.edit_height.setText("Error")
@@ -188,7 +189,7 @@ class Ui_Form(QtWidgets.QWidget):
         num, ok = QtWidgets.QInputDialog.getInt(self, "Width table", "enter width value")
         if ok:
             self.width = num
-            self.edit_width.setText(str(num))
+            self.edit_width.setText(str(self.width))
             if self.width<=0:
                 QtWidgets.QMessageBox.warning(self, "Warning !", "This Value should be positive !")
                 self.edit_width.setText("Error")
