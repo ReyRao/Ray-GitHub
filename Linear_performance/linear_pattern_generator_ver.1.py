@@ -1,15 +1,16 @@
 # usr/bin/python
 # to create linear performance drawing coordinate
 
-import numpy as np
-import csv
 import sys
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Form(QtWidgets.QWidget):
-    def __init__(self, width=10000, height=20000, indent=0, shift=1000, n_line=3):
+class Lpg(QtWidgets.QWidget):
+    def __init__(self, width=1000, height=2000, indent=0, shift=5, n_line=5):
         QtWidgets.QWidget.__init__(self)
         self.setupUi(self)
 
@@ -20,14 +21,173 @@ class Ui_Form(QtWidgets.QWidget):
         self.height = self.height - 2 * self.indent
         self.width = width
         self.width = self.width - 2 * self.indent
-        self.centreX = self.width / 2
-        self.centreY = self.height / 2
         # self.orthogonalPath = "./Linear_performance/orthogonal.csv"
         self.orthogonal_switch = True
+        self.link = None
+
+    def textValue(self, value):
+        return self.value
+
+    def exitApp(self):
+        exit()
+
+    def getIndent(self):
+        num, ok = QtWidgets.QInputDialog.getInt(self, "Indent table", "enter indent value")
+        if ok:
+            self.indent = num
+            self.edit_indent.setText(str(self.indent))
+            if self.indent<0:
+                QtWidgets.QMessageBox.warning(self, "Warning !", "This value cannot be negtive !")
+                self.edit_indent.setText("Error")
+
+    def getShift(self):
+        num, ok = QtWidgets.QInputDialog.getInt(self, "Shift table", "enter shift value")
+        if ok:
+            self.shift = num
+            self.edit_shift.setText(str(self.shift))
+            if self.shift<=0:
+                QtWidgets.QMessageBox.warning(self, "Warning !", "This Value should be positive !")
+                self.edit_shift.setText("Error")
+
+    def getNlines(self):
+        num, ok = QtWidgets.QInputDialog.getInt(self, "Line's #", "enter lines' #")
+        if ok:
+            self.n_line = num
+            self.edit_n_lines.setText(str(self.n_line))
+            if self.n_line<=0:
+                QtWidgets.QMessageBox.warning(self, "Warning !", "This Value should be positive !")
+                self.edit_n_lines.setText("Error")
+            elif self.n_line%2==0:
+                QtWidgets.QMessageBox.warning(self, "Warning !", "line's # must be odd")
+                self.edit_n_lines.setText("Error")
+
+    def getHeight(self):
+        num, ok = QtWidgets.QInputDialog.getInt(self, "Height table", "enter height value")
+        if ok:
+            self.height = num
+            self.edit_height.setText(str(self.height))
+            if self.height<=0:
+                QtWidgets.QMessageBox.warning(self, "Warning !", "This Value should be positive !")
+                self.edit_height.setText("Error")
+
+    def getWidth(self):
+        num, ok = QtWidgets.QInputDialog.getInt(self, "Width table", "enter width value")
+        if ok:
+            self.width = num
+            self.edit_width.setText(str(self.width))
+            if self.width<=0:
+                QtWidgets.QMessageBox.warning(self, "Warning !", "This Value should be positive !")
+                self.edit_width.setText("Error")
+
+    def defaultWarining(self):
+        # width=1000, height=2000, indent=0, shift=5, n_line=5
+        if self.height==206600:
+            QtWidgets.QMessageBox.about(self, "Heads-up!", f"Height is default({208600}).")
+        if self.width==154200:
+            QtWidgets.QMessageBox.about(self, "Heads-up!", f"Width is default({156200}).")
+        if self.indent==1000:
+            QtWidgets.QMessageBox.about(self, "Heads-up!", f"indent is default({1000}).")
+        if self.shift==1050:
+            QtWidgets.QMessageBox.about(self, "Heads-up!", f"shift is default({1050}).")
+        if self.n_line==11:
+            QtWidgets.QMessageBox.about(self, "Heads-up!", f"# of line is default({11}).")
+
+    def orthogonalLine(self):
+        self.defaultWarining()
+
+        if self.height|self.width|self.shift|self.n_line<=0 or self.indent<0:
+            QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
+            QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
+            QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
+            QtWidgets.QMessageBox.warning(self, "Warining !", "It's very important so it pops up three times!!!")
+            self.orthogonal_switch = False
+
+        if self.n_line%2==0:
+            QtWidgets.QMessageBox.warning(self, "Warning!!!", "!!! # of line should be odd !!!")
+            QtWidgets.QMessageBox.warning(self, "Warning!!!", "!!! # of line should be odd !!!")
+            QtWidgets.QMessageBox.warning(self, "Warning!!!", "!!! # of line should be odd !!!")
+            QtWidgets.QMessageBox.warning(self, "Warining !", "It's very important so it pops up three times!!!")
+            self.orthogonal_switch = False
+
+        if self.orthogonal_switch == True:
+            a = 1
+            b = 0
+            x = self.width // 2
+            y = a * x + b
+            y_list_p = []
+            y_list_n = []
+            
+            # for centre
+            for i in range(1, self.n_line + 1):
+                y_centre_p = y + self.n_line // 2 * self.shift
+                y_centre_p = y_centre_p - (i - 1) * self.shift
+                y_centre_n = y_centre_p * -1
+                y_list_p.append(y_centre_p)
+                y_list_n.append(y_centre_n)
+            y_list_n = y_list_n[::-1]
+            y_list = []
+            for i in range(len(y_list_p)):
+                y_list.append(y_list_p[i])
+                y_list.append(y_list_n[i])
+            # print(f"y center list: {y_list}\n")
+            # print(f"b: {b}")
+            plt.figure(figsize=(6, 8))
+            for i in range(0, len(y_list)-1, 2):
+                plt.plot([x, -x], [y_list[i], y_list[i+1]], c='black')
+                plt.plot([-x, x], [y_list[i], y_list[i+1]], c='black')
+
+            # for upper right
+            x_upper_list_p = []
+            x_upper_list_n = []
+            y_upper_list_p = []
+            y_upper_list_n = []
+            for i in range(1, self.n_line + 1):
+                y_upper_p = self.height//2 + self.n_line // 2 * self.shift
+                y_upper_p = y_upper_p - (i - 1) * self.shift
+                b = y_upper_p - x
+                y_upper_n = y_upper_p - self.width
+                y_upper_list_n.append(y_upper_n)
+                # print(f"orig y_upper_p: {y_upper_p}\nb: {b}\ny_upper_n: {y_upper_n}")
+                if y_upper_p > self.height//2:
+                    y_upper_p = self.height//2
+                    # print(f"modify y_upper_p: {y_upper_p}")
+                    x_upper_p = y_upper_p - b
+                    # print(f"b : {b}")
+                    x_upper_list_p.append(x_upper_p)
+                    y_upper_list_p.append(y_upper_p)
+                else:
+                    # print(f"modify y_upper_p: {y_upper_p}")
+                    x_upper_list_p.append(self.width//2)
+                    y_upper_list_p.append(y_upper_p)
+            x_upper_list_n = [-x for i in range(self.n_line)]
+
+#             print(f"x_upper_list_p: {x_upper_list_p}\n\
+# x_upper_list_n: {x_upper_list_n}\n\
+# y_upper_list_p: {y_upper_list_p}\n\
+# y_upper_list_n: {y_upper_list_n}")
+            
+            y_upper_list = []
+            x_upper_list = []
+            for i in range(len(y_upper_list_p)):
+                y_upper_list.append(y_upper_list_p[i])
+                y_upper_list.append(y_upper_list_n[i])
+                x_upper_list.append(x_upper_list_p[i])
+                x_upper_list.append(x_upper_list_n[i])
+
+            for i in range(0, len(x_upper_list), 2):
+                plt.plot([x_upper_list[i], x_upper_list[i+1]], [y_upper_list[i], y_upper_list[i+1]], c='black')
+                plt.plot([-x_upper_list[i], -x_upper_list[i+1]], [y_upper_list[i], y_upper_list[i+1]], c='black')
+
+            plt.show()
+
+
+class Ui_Form(Lpg):
+    def __init__(self):
+        super(Ui_Form, self).__init__()
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(600, 300)
+        Form.resize(500, 300)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -40,7 +200,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.btn_height.setObjectName("btn_height")
         self.verticalLayout_2.addWidget(self.btn_height)
         self.edit_height = QtWidgets.QLineEdit(Form)
-        self.edit_height.setText("")
+        # self.edit_height.setText("")
         self.edit_height.setObjectName("edit_height")
         self.verticalLayout_2.addWidget(self.edit_height)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
@@ -53,6 +213,15 @@ class Ui_Form(QtWidgets.QWidget):
         self.edit_width.setObjectName("edit_width")
         self.verticalLayout_3.addWidget(self.edit_width)
         self.horizontalLayout_2.addLayout(self.verticalLayout_3)
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.btn_indent = QtWidgets.QPushButton(Form)
+        self.btn_indent.setObjectName("btn_indent")
+        self.verticalLayout_6.addWidget(self.btn_indent)
+        self.edit_indent = QtWidgets.QLineEdit(Form)
+        self.edit_indent.setObjectName("edit_indent")
+        self.verticalLayout_6.addWidget(self.edit_indent)
+        self.horizontalLayout_2.addLayout(self.verticalLayout_6)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.btn_shift = QtWidgets.QPushButton(Form)
@@ -94,6 +263,8 @@ class Ui_Form(QtWidgets.QWidget):
         self.verticalLayout.addItem(spacerItem3)
         self.horizontalLayout.addLayout(self.verticalLayout)
 
+        self.defaultValue()
+
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -102,8 +273,9 @@ class Ui_Form(QtWidgets.QWidget):
         Form.setWindowTitle(_translate("Form", "Linear Pattern Generator"))
         self.btn_height.setText(_translate("Form", "Set Height"))
         self.btn_width.setText(_translate("Form", "Set Width"))
+        self.btn_indent.setText(_translate("Form", "Set Indent"))
         self.btn_shift.setText(_translate("Form", "Set Shift"))
-        self.btn_n_lines.setText(_translate("Form", "Set # of Lines"))
+        self.btn_n_lines.setText(_translate("Form", "Set # of line"))
         self.btn_orthogonal_pattern.setText(_translate("Form", "Plot Orthogonal Pattern"))
         self.btn_oblique_pattern.setText(_translate("Form", "Plot Oblique Pattern"))
         self.btn_exit.setText(_translate("Form", "Exit"))
@@ -112,7 +284,8 @@ class Ui_Form(QtWidgets.QWidget):
         self.btn_n_lines.clicked.connect(self.getNlines)
         self.btn_height.clicked.connect(self.getHeight)
         self.btn_width.clicked.connect(self.getWidth)
-        self.btn_exit.clicked.connect(self.exitapp)
+        self.btn_exit.clicked.connect(self.exitApp)
+        self.btn_indent.clicked.connect(self.getIndent)
 
         self.btn_orthogonal_pattern.clicked.connect(self.orthogonalLine)
 
@@ -120,99 +293,27 @@ class Ui_Form(QtWidgets.QWidget):
         self.edit_width.setReadOnly(True)
         self.edit_shift.setReadOnly(True)
         self.edit_n_lines.setReadOnly(True)
+        self.edit_indent.setReadOnly(True)
 
-    def exitapp(self):
-        exit()
-    
-    def getShift(self):
-        num, ok = QtWidgets.QInputDialog.getInt(self, "Shift table", "enter shift value")
-        if ok:
-            self.shift = num
-            self.edit_shift.setText(str(num))
-            if self.shift<=0:
-                QtWidgets.QMessageBox.about(self, "Warning !", "This Value should be positive !")
-                self.edit_shift.setText("Error")
-    
-    def getNlines(self):
-        num, ok = QtWidgets.QInputDialog.getInt(self, "Line's #", "enter lines' #")
-        if ok:
-            self.n_line = num
-            self.edit_n_lines.setText(str(num))
-            if self.n_line<=0:
-                QtWidgets.QMessageBox.about(self, "Warning !", "This Value should be positive !")
-                self.edit_n_lines.setText("Error")
+        QtWidgets.QMessageBox.about(self, "Heads-up!", "\"Unit\" here should be micrometer!")
 
-    def getHeight(self):
-        num, ok = QtWidgets.QInputDialog.getInt(self, "Height table", "enter height value")
-        if ok:
-            self.height = num
-            self.edit_height.setText(str(num))
-            if self.height<=0:
-                QtWidgets.QMessageBox.about(self, "Warning !", "This Value should be positive !")
-                self.edit_height.setText("Error")
+        # self.link = QtGui.QDesktopServices.openUrl(QtCore.QUrl(
+        #     "https://www.youtube.com/embed/xmf-6TYjGuQ"))
 
-    def getWidth(self):
-        num, ok = QtWidgets.QInputDialog.getInt(self, "Width table", "enter width value")
-        if ok:
-            self.width = num
-            self.edit_width.setText(str(num))
-            if self.width<=0:
-                QtWidgets.QMessageBox.about(self, "Warning !", "This Value should be positive !")
-                self.edit_width.setText("Error")
+    def defaultValue(self):
+        self.edit_height.setText("default")
+        self.edit_indent.setText("default")
+        self.edit_n_lines.setText("default")
+        self.edit_shift.setText("default")
+        self.edit_width.setText("default")
 
-    def defaultWarining(self):
-        # width=10000, height=20000, indent=0, shift=1000, n_line=3
-        if self.height==20000:
-            QtWidgets.QMessageBox.about(self, "Warning!", f"Height is default({self.height}).")
-        if self.width==10000:
-            QtWidgets.QMessageBox.about(self, "Warning!", f"Width is default({self.width}).")
-        if self.indent==0:
-            QtWidgets.QMessageBox.about(self, "Warning!", f"indent is default({self.indent}).")
-        if self.shift==100:
-            QtWidgets.QMessageBox.about(self, "Warning!", f"shift is default({self.shift}).")
-        if self.n_line==3:
-            QtWidgets.QMessageBox.about(self, "Warning!", f"n_line is default({self.n_line}).")
-
-    def orthogonalLine(self):
-        self.defaultWarining()
-        if self.height|self.width|self.shift|self.n_line<=0:
-            QtWidgets.QMessageBox.about(self, "Warining !", "!!!!! Values Error !!!!!")
-            QtWidgets.QMessageBox.about(self, "Warining !", "!!!!! Values Error !!!!!")
-            QtWidgets.QMessageBox.about(self, "Warining !", "!!!!! Values Error !!!!!")
-            QtWidgets.QMessageBox.about(self, "Warining !", "It's very important so it pops up three times !")
-            self.orthogonal_switch = False
-
-        if self.orthogonal_switch == True:
-            a = 1
-            b = self.centreY - self.centreX
-            x = self.width
-            y = a * x + b
-            x = x - self.centreX
-            y = y - self.centreY
-            y_list_p = []
-            y_list_n = []
-
-            # for centre
-            for i in range(self.n_line):
-                i += 1
-                y_centre_p = y + self.n_line // 2 * self.shift
-                y_centre_p = y_centre_p + self.shift
-                y_centre_p = y_centre_p - i * self.shift
-                y_centre_n = y_centre_p * -1
-                y_list_p.append(y_centre_p)
-                y_list_n.append(y_centre_n)
-            y_list_n = y_list_n[::-1]
-            
-            
-            print(y_list_p, y_list_n)
-            # return y_list_p, y_list_n
-        
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
     ex = Ui_Form()
     ex.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
+
 
 if __name__ == "__main__":
     main()

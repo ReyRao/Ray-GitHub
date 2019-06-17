@@ -22,15 +22,15 @@ class Ui_Form(QtWidgets.QWidget):
         self.height = self.height - 2 * self.indent
         self.width = width
         self.width = self.width - 2 * self.indent
-        self.centreX = self.width / 2
-        self.centreY = self.height / 2
+        # self.centreX = self.width / 2
+        # self.centreY = self.height / 2
         # self.orthogonalPath = "./Linear_performance/orthogonal.csv"
         self.orthogonal_switch = True
         self.link = None
         
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(441, 143)
+        Form.resize(500, 300)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -136,10 +136,19 @@ class Ui_Form(QtWidgets.QWidget):
         self.edit_n_lines.setReadOnly(True)
         self.edit_indent.setReadOnly(True)
 
+        self.edit_height.setText("")
+        self.edit_indent.setText("")
+        self.edit_n_lines.setText("")
+        self.edit_shift.setText("")
+        self.edit_width.setText("")
+
         QtWidgets.QMessageBox.about(self, "Heads-up!", "\"Unit\" here should be micrometer!")
 
         # self.link = QDesktopServices.openUrl(QUrl(
         #     "https://www.youtube.com/embed/xmf-6TYjGuQ"))
+
+    def textValue(self, value):
+        return self.value
 
     def exitApp(self):
         exit()
@@ -207,7 +216,7 @@ class Ui_Form(QtWidgets.QWidget):
 
     def orthogonalLine(self):
         # self.defaultWarining()
-        if self.height|self.width|self.shift|self.n_line<=0 and self.indent<0:
+        if self.height|self.width|self.shift|self.n_line<=0 or self.indent<0:
             QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
             QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
             QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
@@ -222,11 +231,11 @@ class Ui_Form(QtWidgets.QWidget):
 
         if self.orthogonal_switch == True:
             a = 1
-            b = self.centreY - self.centreX
-            x = self.width
+            b = 0
+            x = self.width // 2
             y = a * x + b
-            x = x - self.centreX
-            y = y - self.centreY
+            # x = x - self.centreX
+            # y = y - self.centreY
             y_list_p = []
             y_list_n = []
             pn_shift = b
@@ -246,6 +255,11 @@ class Ui_Form(QtWidgets.QWidget):
                 y_list.append(y_list_p[i])
                 y_list.append(y_list_n[i])
             # print(f"y center list: {y_list}\n")
+            # print(f"b: {b}")
+            plt.figure(figsize=(6, 8))
+            for i in range(0, len(y_list)-1, 2):
+                plt.plot([self.width//2, -self.width//2], [y_list[i], y_list[i+1]])
+                plt.plot([-self.width//2, self.width//2], [y_list[i], y_list[i+1]])
 
             # for upper
             x_upper_list_p = []
@@ -256,7 +270,7 @@ class Ui_Form(QtWidgets.QWidget):
                 i += 1
                 y_upper_p = self.height//2 + self.n_line // 2 * self.shift
                 y_upper_p = y_upper_p - (i - 1) * self.shift
-                b = self.centreX - self.centreX + y_list_p[i-1]
+                b = y_list_p[i-1]
                 y_upper_n = y_upper_p - pn_shift
                 y_upper_list_n.append(y_upper_n)
                 # print(f"orig y_upper_p: {y_upper_p}\nb: {b}\ny_upper_n: {y_upper_n}")
@@ -272,21 +286,17 @@ class Ui_Form(QtWidgets.QWidget):
                     # print(f"modify y_upper_p: {y_upper_p}")
                     x_upper_list_p.append(self.width//2)
                     y_upper_list_p.append(y_upper_p)
-            
+
             print(f"x_upper_list_p: {x_upper_list_p}\n\
 y_upper_list_p: {y_upper_list_p}\n\
 y_upper_list_n: {y_upper_list_n}")
 
+            # print(f"y_list: {y_list}\nb: {b}")
 
 
-
-            plt.figure(figsize=(6, 9))
-            for i in range(len(y_list)-1):
-                plt.plot([self.width//2, -self.width//2], [y_list[i], y_list[i+1]])
-                plt.plot([-self.width//2, self.width//2], [y_list[i], y_list[i+1]])
+            
 
             plt.show()
-
 
 
 
