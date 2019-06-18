@@ -4,13 +4,16 @@
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+import csv
+from time import sleep
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Lpg(QtWidgets.QWidget):
-    def __init__(self, width=1000, height=2000, indent=0, shift=5, n_line=5):
+    def __init__(self, width=156200, height=208600, indent=1000, shift=1050, n_line=7):
+        # width=156200, height=208600, indent=1000, shift=1050, n_line=7
         QtWidgets.QWidget.__init__(self)
         self.setupUi(self)
 
@@ -18,10 +21,12 @@ class Lpg(QtWidgets.QWidget):
         self.shift = shift
         self.indent = indent
         self.height = height
+        self.org_height = self.height
         self.height = self.height - 2 * self.indent
         self.width = width
+        self.org_width = self.width
         self.width = self.width - 2 * self.indent
-        # self.orthogonalPath = "./Linear_performance/orthogonal.csv"
+        self.orthogonalPath = "./orthogonal.csv"
         self.orthogonal_switch = True
         self.link = None
 
@@ -80,10 +85,10 @@ class Lpg(QtWidgets.QWidget):
                 self.edit_width.setText("Error")
 
     def defaultWarining(self):
-        # width=1000, height=2000, indent=0, shift=5, n_line=5
-        if self.height==206600:
+        # width=156200, height=208600, indent=1000, shift=1050, n_line=7
+        if self.org_height==208600:
             QtWidgets.QMessageBox.about(self, "Heads-up!", f"Height is default({208600}).")
-        if self.width==154200:
+        if self.org_width==156200:
             QtWidgets.QMessageBox.about(self, "Heads-up!", f"Width is default({156200}).")
         if self.indent==1000:
             QtWidgets.QMessageBox.about(self, "Heads-up!", f"indent is default({1000}).")
@@ -92,22 +97,15 @@ class Lpg(QtWidgets.QWidget):
         if self.n_line==11:
             QtWidgets.QMessageBox.about(self, "Heads-up!", f"# of line is default({11}).")
 
+        if self.height|self.width|self.shift|self.n_line<=0 or self.indent<0 or self.n_line%2==0:
+            QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
+            QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
+            QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
+            QtWidgets.QMessageBox.warning(self, "Warining !", "It's very important so it pops up three times!!!")
+            self.orthogonal_switch = False
+
     def orthogonalLine(self):
         self.defaultWarining()
-
-        if self.height|self.width|self.shift|self.n_line<=0 or self.indent<0:
-            QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
-            QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
-            QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
-            QtWidgets.QMessageBox.warning(self, "Warining !", "It's very important so it pops up three times!!!")
-            self.orthogonal_switch = False
-
-        if self.n_line%2==0:
-            QtWidgets.QMessageBox.warning(self, "Warning!!!", "!!! # of line should be odd !!!")
-            QtWidgets.QMessageBox.warning(self, "Warning!!!", "!!! # of line should be odd !!!")
-            QtWidgets.QMessageBox.warning(self, "Warning!!!", "!!! # of line should be odd !!!")
-            QtWidgets.QMessageBox.warning(self, "Warining !", "It's very important so it pops up three times!!!")
-            self.orthogonal_switch = False
 
         if self.orthogonal_switch == True:
             a = 1
@@ -117,7 +115,7 @@ class Lpg(QtWidgets.QWidget):
             y_list_p = []
             y_list_n = []
             
-            # for centre
+############# for centre
             for i in range(1, self.n_line + 1):
                 y_centre_p = y + self.n_line // 2 * self.shift
                 y_centre_p = y_centre_p - (i - 1) * self.shift
@@ -136,7 +134,30 @@ class Lpg(QtWidgets.QWidget):
                 plt.plot([x, -x], [y_list[i], y_list[i+1]], c='black')
                 plt.plot([-x, x], [y_list[i], y_list[i+1]], c='black')
 
-            # for upper right
+            # save data
+            with open(self.orthogonalPath, 'a', newline='') as file:
+                writer = csv.writer(file)
+                # write center
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([x, y_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([x, y_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x, y_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x, y_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([-x, y_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([-x, y_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x, y_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x, y_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+
+############# for upper
             x_upper_list_p = []
             x_upper_list_n = []
             y_upper_list_p = []
@@ -165,7 +186,7 @@ class Lpg(QtWidgets.QWidget):
 # x_upper_list_n: {x_upper_list_n}\n\
 # y_upper_list_p: {y_upper_list_p}\n\
 # y_upper_list_n: {y_upper_list_n}")
-            
+
             y_upper_list = []
             x_upper_list = []
             for i in range(len(y_upper_list_p)):
@@ -175,8 +196,104 @@ class Lpg(QtWidgets.QWidget):
                 x_upper_list.append(x_upper_list_n[i])
 
             for i in range(0, len(x_upper_list), 2):
-                plt.plot([x_upper_list[i], x_upper_list[i+1]], [y_upper_list[i], y_upper_list[i+1]], c='black')
-                plt.plot([-x_upper_list[i], -x_upper_list[i+1]], [y_upper_list[i], y_upper_list[i+1]], c='black')
+                plt.plot(
+                    [x_upper_list[i], x_upper_list[i+1]], 
+                    [y_upper_list[i], y_upper_list[i+1]], 
+                    c='black')
+                plt.plot(
+                    [-x_upper_list[i], -x_upper_list[i+1]], 
+                    [y_upper_list[i], y_upper_list[i+1]], 
+                    c='black')
+
+            # save data
+            with open(self.orthogonalPath, 'a', newline='') as file:
+                writer = csv.writer(file)
+                # write center
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([-x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+
+############# for bottom
+            x_bottom_list_p = []
+            x_bottom_list_n = []
+            y_bottom_list_p = []
+            y_bottom_list_n = []
+            for i in range(1, self.n_line + 1):
+                y_bottom_n = -self.height//2 + self.n_line//2 * self.shift
+                y_bottom_n = y_bottom_n - (i - 1) * self.shift
+                y_bottom_p = y_bottom_n + self.width
+                y_bottom_list_p.append(y_bottom_p)
+                b = y_bottom_p - x
+                if y_bottom_n < -self.height//2:
+                    y_bottom_n = -self.height//2
+                    x_bottom_n = (y_bottom_n - b) 
+                    x_bottom_list_n.append(x_bottom_n)
+                    y_bottom_list_n.append(y_bottom_n)
+                else:
+                    y_bottom_list_n.append(y_bottom_n)
+                    x_bottom_list_n.append(-self.width//2)
+            x_bottom_list_p = [x for i in range(self.n_line)]
+
+            y_bottom_list = []
+            x_bottom_list = []
+            for i in range(len(y_bottom_list_p)):
+                y_bottom_list.append(y_bottom_list_p[i])
+                y_bottom_list.append(y_bottom_list_n[i])
+                x_bottom_list.append(x_bottom_list_p[i])
+                x_bottom_list.append(x_bottom_list_n[i])
+
+#             print(f"x_bottom_list_p: {x_bottom_list_p}\n\
+# x_bottom_list_n: {x_bottom_list_n}\n\
+# y_bottom_list_p: {y_bottom_list_p}\n\
+# y_bottom_list_n: {y_bottom_list_n}\n")
+
+            for i in range(0, len(x_bottom_list), 2):
+                plt.plot(
+                    [x_bottom_list[i], x_bottom_list[i+1]], 
+                    [y_bottom_list[i], y_bottom_list[i+1]], 
+                    c='black')
+                plt.plot(
+                    [-x_bottom_list[i], -x_bottom_list[i+1]], 
+                    [y_bottom_list[i], y_bottom_list[i+1]], 
+                    c='black')
+
+            # save data
+            with open(self.orthogonalPath, 'a', newline='') as file:
+                writer = csv.writer(file)
+                # write center
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([-x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
 
             plt.show()
 
