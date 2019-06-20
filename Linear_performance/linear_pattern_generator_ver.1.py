@@ -1,8 +1,7 @@
-# usr/bin/python
+# usr/bin/python3
 # to create linear performance drawing coordinate
 
 import sys
-import numpy as np
 import matplotlib.pyplot as plt
 import csv
 from time import sleep
@@ -12,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Lpg(QtWidgets.QWidget):
-    def __init__(self, width=156200, height=208600, indent=1000, shift=1050, n_line=7):
+    def __init__(self, width=500, height=2000, indent=0, shift=20, n_line=5):
         # width=156200, height=208600, indent=1000, shift=1050, n_line=7
         QtWidgets.QWidget.__init__(self)
         self.setupUi(self)
@@ -27,7 +26,7 @@ class Lpg(QtWidgets.QWidget):
         self.org_width = self.width
         self.width = self.width - 2 * self.indent
         self.orthogonalPath = "./orthogonal.csv"
-        self.orthogonal_switch = True
+        self.line_switch = True
         self.link = None
 
     def textValue(self, value):
@@ -94,20 +93,20 @@ class Lpg(QtWidgets.QWidget):
             QtWidgets.QMessageBox.about(self, "Heads-up!", f"indent is default({1000}).")
         if self.shift==1050:
             QtWidgets.QMessageBox.about(self, "Heads-up!", f"shift is default({1050}).")
-        if self.n_line==11:
-            QtWidgets.QMessageBox.about(self, "Heads-up!", f"# of line is default({11}).")
+        if self.n_line==7:
+            QtWidgets.QMessageBox.about(self, "Heads-up!", f"# of line is default({7}).")
 
         if self.height|self.width|self.shift|self.n_line<=0 or self.indent<0 or self.n_line%2==0:
             QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
             QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
             QtWidgets.QMessageBox.warning(self, "Warining !", "!!!!! Values Error !!!!!")
             QtWidgets.QMessageBox.warning(self, "Warining !", "It's very important so it pops up three times!!!")
-            self.orthogonal_switch = False
+            self.line_switch = False
 
     def orthogonalLine(self):
         self.defaultWarining()
 
-        if self.orthogonal_switch == True:
+        if self.line_switch == True:
             a = 1
             b = 0
             x = self.width // 2
@@ -297,10 +296,103 @@ class Lpg(QtWidgets.QWidget):
 
             plt.show()
 
+    def obliqueLine(self):
+        self.defaultWarining()
 
-class Ui_Form(Lpg):
+        if self.line_switch == True:
+            x = self.width // 2
+            y = self.height // 4
+            b = 0
+            a = (y - b) / x
+            # for centre
+            y_centre_list_p = []
+            y_centre_list_n = []
+            y_centre_list = []
+            for i in range(1, self.n_line+1):
+                y_centre_p = y + self.n_line//2 * self.shift
+                y_centre_p = y_centre_p - (i -1) * self.shift
+                y_centre_n = y_centre_p - 2 * y
+                y_centre_list_p.append(y_centre_p)
+                y_centre_list_n.append(y_centre_n)
+            for i in range(len(y_centre_list_p)):
+                y_centre_list.append(y_centre_list_p[i])
+                y_centre_list.append(y_centre_list_n[i])
+
+            plt.figure(figsize=(6, 8))
+            for i in range(0, len(y_centre_list)-1, 2):
+                plt.plot([x, -x], [y_centre_list[i], y_centre_list[i+1]], c='black')
+                plt.plot([-x, x], [y_centre_list[i], y_centre_list[i+1]], c='black')
+
+            print(
+                f"y_centre_list_p: {y_centre_list_p}\n\
+y_centre_list_n: {y_centre_list_n}\n\
+x_centre_list_p: {x}\n\
+x_centre_list_n: {-x}")
+
+            # for upper
+            y_upper_list_p = []
+            y_upper_list_n = []
+            y_upper_list = []
+            x_upper_list_p = []
+            x_upper_list_n = []
+            x_upper_list = []
+            y_upper_p = self.height//2 + self.n_line//2 * self.shift
+            pn_shift = y_centre_list_p[0] - y_centre_list_n[0]
+            for i in range(1, self.n_line+1):
+                y_upper_p = self.height//2 + self.n_line//2 * self.shift
+                y_upper_p = y_upper_p - (i - 1) * self.shift
+                y_upper_n = y_upper_p - pn_shift
+                y_upper_list_n.append(y_upper_n)
+                if y_upper_p > self.height//2:
+                    y_upper_p = self.height//2
+                    y_upper_list_p.append(y_upper_p)
+                    x_upper_p = (y_upper_p - pn_shift) // a
+                    x_upper_list_p.append(x_upper_p)
+                else:
+                    y_upper_list_p.append(y_upper_p)
+                    x_upper_list_p.append(self.width//2)
+            x_upper_list_n = [-self.width//2 for i in range(self.n_line)]
+
+            for i in range(len(y_upper_list_p)):
+                y_upper_list.append(y_upper_list_p[i])
+                y_upper_list.append(y_upper_list_n[i])
+                x_upper_list.append(x_upper_list_p[i])
+                x_upper_list.append(x_upper_list_n[i])
+
+            for i in range(0, len(x_upper_list), 2):
+                plt.plot(
+                    [x_upper_list[i], x_upper_list[i+1]], 
+                    [y_upper_list[i], y_upper_list[i+1]], 
+                    c='black')
+                plt.plot(
+                    [-x_upper_list[i], -x_upper_list[i+1]], 
+                    [y_upper_list[i], y_upper_list[i+1]], 
+                    c='black')
+
+            print(
+                f"y_upper_list_p: {y_upper_list_p}\n\
+y_upper_list_n: {y_upper_list_n}\n\
+x_upper_list_p: {x_upper_list_p}\n\
+x_upper_list_n: {x_upper_list_n}")
+
+            plt.show()
+
+
+class Surprised(Lpg):
     def __init__(self):
-        super(Ui_Form, self).__init__()
+        QtWidgets.QWidget.__init__(self)
+        Lpg.__init__(self)
+        self.setupUi(self)
+
+    def surprised_1(self):
+        pass
+
+
+class Ui_Form(Surprised):
+    def __init__(self):
+        Lpg.__init__(self)
+        Surprised.__init__(self)
+        # super(Ui_Form, self).__init__()
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -317,7 +409,6 @@ class Ui_Form(Lpg):
         self.btn_height.setObjectName("btn_height")
         self.verticalLayout_2.addWidget(self.btn_height)
         self.edit_height = QtWidgets.QLineEdit(Form)
-        # self.edit_height.setText("")
         self.edit_height.setObjectName("edit_height")
         self.verticalLayout_2.addWidget(self.edit_height)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
@@ -405,6 +496,7 @@ class Ui_Form(Lpg):
         self.btn_indent.clicked.connect(self.getIndent)
 
         self.btn_orthogonal_pattern.clicked.connect(self.orthogonalLine)
+        self.btn_oblique_pattern.clicked.connect(self.obliqueLine)
 
         self.edit_height.setReadOnly(True)
         self.edit_width.setReadOnly(True)
