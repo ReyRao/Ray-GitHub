@@ -21,11 +21,10 @@ class Lpg(QtWidgets.QWidget):
         self.indent = indent
         self.height = height
         self.org_height = self.height
-        self.height = self.height - 2 * self.indent
         self.width = width
         self.org_width = self.width
-        self.width = self.width - 2 * self.indent
         self.orthogonalPath = "./orthogonal.csv"
+        self.obliquePath = "./oblique.csv"
         self.line_switch = True
         self.link = None
 
@@ -104,6 +103,8 @@ class Lpg(QtWidgets.QWidget):
             self.line_switch = False
 
     def orthogonalLine(self):
+        self.height = self.height - 2 * self.indent
+        self.width = self.width - 2 * self.indent
         self.defaultWarining()
 
         if self.line_switch == True:
@@ -274,7 +275,7 @@ class Lpg(QtWidgets.QWidget):
             # save data
             with open(self.orthogonalPath, 'a', newline='') as file:
                 writer = csv.writer(file)
-                # write center
+                # write bottom
                 for i in range(0, 2*self.n_line, 2):
                     writer.writerow([x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
                     sleep(0.01)
@@ -297,6 +298,9 @@ class Lpg(QtWidgets.QWidget):
             plt.show()
 
     def obliqueLine(self):
+        self.height = self.height - 2 * self.indent
+        self.width = self.width - 2 * self.indent
+
         self.defaultWarining()
 
         if self.line_switch == True:
@@ -323,11 +327,28 @@ class Lpg(QtWidgets.QWidget):
                 plt.plot([x, -x], [y_centre_list[i], y_centre_list[i+1]], c='black')
                 plt.plot([-x, x], [y_centre_list[i], y_centre_list[i+1]], c='black')
 
-            print(
-                f"y_centre_list_p: {y_centre_list_p}\n\
-y_centre_list_n: {y_centre_list_n}\n\
-x_centre_list_p: {x}\n\
-x_centre_list_n: {-x}")
+            # save data
+            with open(self.obliquePath, 'a', newline='') as file:
+                writer = csv.writer(file)
+                # write centre
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([x, y_centre_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([x, y_centre_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x, y_centre_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x, y_centre_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([-x, y_centre_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([-x, y_centre_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x, y_centre_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x, y_centre_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
 
             # for upper
             y_upper_list_p = []
@@ -370,29 +391,163 @@ x_centre_list_n: {-x}")
                     [y_upper_list[i], y_upper_list[i+1]], 
                     c='black')
 
-            print(
-                f"y_upper_list_p: {y_upper_list_p}\n\
-y_upper_list_n: {y_upper_list_n}\n\
-x_upper_list_p: {x_upper_list_p}\n\
-x_upper_list_n: {x_upper_list_n}")
+            # save data
+            with open(self.obliquePath, 'a', newline='') as file:
+                writer = csv.writer(file)
+                # write upper
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([-x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
 
+            # for bottom
+            y_bottom_list = []
+            y_bottom_list_p = []
+            y_bottom_list_n = []
+            x_bottom_list = []
+            x_bottom_list_p = []
+            x_bottom_list_n = []
+            for i in range(1, self.n_line+1):
+                y_bottom_n = -self.height//2 + self.n_line//2 * self.shift
+                y_bottom_n = y_bottom_n - (i - 1) * self.shift
+                y_bottom_p = y_bottom_n + pn_shift
+                y_bottom_list_p.append(y_bottom_p)
+                b = y_bottom_p - y_centre_list_p[self.n_line//2]
+                if y_bottom_n < -self.height//2:
+                    y_bottom_n = -self.height//2
+                    y_bottom_list_n.append(y_bottom_n)
+                    x_bottom_n = (y_bottom_n - b) / a
+                    x_bottom_list_n.append(x_bottom_n)
+                else:
+                    y_bottom_list_n.append(y_bottom_n)
+                    x_bottom_list_n.append(-self.width//2)
+                x_bottom_list_p = [self.width//2 for i in range(self.n_line)]
+
+            for i in range(len(y_bottom_list_p)):
+                y_bottom_list.append(y_bottom_list_p[i])
+                y_bottom_list.append(y_bottom_list_n[i])
+                x_bottom_list.append(x_bottom_list_p[i])
+                x_bottom_list.append(x_bottom_list_n[i])
+
+            for i in range(0, len(y_bottom_list), 2):
+                plt.plot(
+                    [x_bottom_list[i], x_bottom_list[i+1]], 
+                    [y_bottom_list[i], y_bottom_list[i+1]], 
+                    c='black')
+                plt.plot(
+                    [-x_bottom_list[i], -x_bottom_list[i+1]], 
+                    [y_bottom_list[i], y_bottom_list[i+1]], 
+                    c='black')
+
+            # save data
+            with open(self.obliquePath, 'a', newline='') as file:
+                writer = csv.writer(file)
+                # write bottom
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                for i in range(0, 2*self.n_line, 2):
+                    writer.writerow([-x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
+                    sleep(0.01)
+                    writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
+                    sleep(0.01)
             plt.show()
 
+    def unlimitedSquare(self):
+        self.height = self.height - 2 * self.indent
+        self.width = self.width - 2 * self.indent
+        x = -self.width // 2
+        y = -self.height // 2
+        x_list = []
+        y_list = []
+        x_list.append(x)
+        y_list.append(y)
+        print(f"width//2: {self.width//2}")
+        print(f"shift: {self.shift}")
+        for i in range(1, 10000):
+            if abs(x) > self.width//2:
+                break
+            else:
+                x = x + self.shift * i
+            if abs(x) > self.width//2:
+                break
+            else:
+                x_list.append(x)
+                x = self.width//2
+            if abs(x) > self.width//2:
+                break
+            else:
+                x_list.append(x)
+                x = self.width//2 - self.shift * i
+            if abs(x) > self.width//2:
+                break
+            else:
+                x_list.append(x)
+                x = -self.width//2
+            if abs(x) > self.width//2:
+                break
+            else:
+                x_list.append(x)
+            
 
-class Surprised(Lpg):
+            if abs(y) > self.height//2:
+                break
+            else:
+                y = self.height//2
+            if abs(y) > self.height//2:
+                break
+            else:
+                y_list.append(y)
+                y = self.height//2 - self.shift * i
+            if abs(y) > self.height//2:
+                break
+            else:
+                y_list.append(y)
+                y = -self.height//2
+            if abs(y) > self.height//2:
+                break
+            else:
+                y_list.append(y)
+                y = -self.height//2 + self.shift * i
+            if abs(y) > self.height//2:
+                break
+            else:
+                y_list.append(y)
+            
+        print(f"y_list: {y_list}")
+        plt.figure(figsize=(6, 8))
+        for i in range(len(y_list)-1):
+            plt.plot([x_list[i], x_list[i+1]], [y_list[i], y_list[i+1]], c='black')
+            
+        plt.show()
+
+class Ui_Form(Lpg):
     def __init__(self):
         Lpg.__init__(self)
-        self.setupUi(self)
-
-    def surprised_1(self):
-        pass
-
-
-class Ui_Form(Surprised):
-    def __init__(self):
-        # Surprised.__init__(self)
-        Lpg.__init__(self)
-        # super(Ui_Form, self).__init__()
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -488,15 +643,16 @@ class Ui_Form(Surprised):
         self.btn_oblique_pattern.setText(_translate("Form", "Plot Oblique Pattern"))
         self.btn_exit.setText(_translate("Form", "Exit"))
 
+        self.btn_indent.clicked.connect(self.getIndent)
         self.btn_shift.clicked.connect(self.getShift)
         self.btn_n_lines.clicked.connect(self.getNlines)
         self.btn_height.clicked.connect(self.getHeight)
         self.btn_width.clicked.connect(self.getWidth)
         self.btn_exit.clicked.connect(self.exitApp)
-        self.btn_indent.clicked.connect(self.getIndent)
-
+        
         self.btn_orthogonal_pattern.clicked.connect(self.orthogonalLine)
-        self.btn_oblique_pattern.clicked.connect(self.obliqueLine)
+        # self.btn_oblique_pattern.clicked.connect(self.obliqueLine)
+        self.btn_oblique_pattern.clicked.connect(self.unlimitedSquare)
 
         self.edit_height.setReadOnly(True)
         self.edit_width.setReadOnly(True)
