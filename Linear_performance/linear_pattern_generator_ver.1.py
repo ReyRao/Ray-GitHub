@@ -343,10 +343,11 @@ x_centre_list_n: {-x}")
                 y_upper_p = y_upper_p - (i - 1) * self.shift
                 y_upper_n = y_upper_p - pn_shift
                 y_upper_list_n.append(y_upper_n)
+                b = y_upper_p - y_centre_list_p[self.n_line//2]
                 if y_upper_p > self.height//2:
                     y_upper_p = self.height//2
                     y_upper_list_p.append(y_upper_p)
-                    x_upper_p = (y_upper_p - pn_shift) // a
+                    x_upper_p = (y_upper_p - b) / a
                     x_upper_list_p.append(x_upper_p)
                 else:
                     y_upper_list_p.append(y_upper_p)
@@ -380,7 +381,6 @@ x_upper_list_n: {x_upper_list_n}")
 
 class Surprised(Lpg):
     def __init__(self):
-        QtWidgets.QWidget.__init__(self)
         Lpg.__init__(self)
         self.setupUi(self)
 
@@ -390,8 +390,8 @@ class Surprised(Lpg):
 
 class Ui_Form(Surprised):
     def __init__(self):
+        # Surprised.__init__(self)
         Lpg.__init__(self)
-        Surprised.__init__(self)
         # super(Ui_Form, self).__init__()
 
     def setupUi(self, Form):
