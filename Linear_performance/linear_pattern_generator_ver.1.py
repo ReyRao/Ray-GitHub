@@ -25,6 +25,7 @@ class Lpg(QtWidgets.QWidget):
         self.org_width = self.width
         self.orthogonalPath = "./orthogonal.csv"
         self.obliquePath = "./oblique.csv"
+        self.squarePath = "./square.csv"
         self.line_switch = True
         self.link = None
 
@@ -477,7 +478,7 @@ class Lpg(QtWidgets.QWidget):
                     sleep(0.01)
             plt.show()
 
-    def unlimitedSquare(self):
+    def square(self):
         self.height = self.height - 2 * self.indent
         self.width = self.width - 2 * self.indent
         x = -self.width // 2
@@ -486,8 +487,8 @@ class Lpg(QtWidgets.QWidget):
         y_list = []
         x_list.append(x)
         y_list.append(y)
-        print(f"width//2: {self.width//2}")
-        print(f"shift: {self.shift}")
+        # print(f"width//2: {self.width//2}")
+        # print(f"shift: {self.shift}")
         for i in range(1, 10000):
             if abs(x) > self.width//2:
                 break
@@ -538,12 +539,19 @@ class Lpg(QtWidgets.QWidget):
             else:
                 y_list.append(y)
             
-        print(f"y_list: {y_list}")
+        # print(f"y_list: {y_list}")
         plt.figure(figsize=(6, 8))
         for i in range(len(y_list)-1):
             plt.plot([x_list[i], x_list[i+1]], [y_list[i], y_list[i+1]], c='black')
             
         plt.show()
+        
+        with open(self.squarePath, 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([x_list[0], y_list[0], 0, 0, 0, 300, -1)
+            for i in range(len(x_list)):
+                writer.writerow([x_list[i], y_list[i], 4000, 0, 0, 10, -1])
+            writer.writerow([x_list[-1], y_list[-1], 0, 0, 0, 300, -1])
 
 class Ui_Form(Lpg):
     def __init__(self):
@@ -652,7 +660,7 @@ class Ui_Form(Lpg):
         
         self.btn_orthogonal_pattern.clicked.connect(self.orthogonalLine)
         # self.btn_oblique_pattern.clicked.connect(self.obliqueLine)
-        self.btn_oblique_pattern.clicked.connect(self.unlimitedSquare)
+        self.btn_oblique_pattern.clicked.connect(self.square)
 
         self.edit_height.setReadOnly(True)
         self.edit_width.setReadOnly(True)
