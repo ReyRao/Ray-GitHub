@@ -142,173 +142,183 @@ class Lpg(QtWidgets.QWidget):
                 y_list.append(y_list_n[i])
             # print(f"y center list: {y_list}\n")
             # print(f"b: {b}")
-            plt.figure(figsize=(6, 8))
-            for i in range(0, len(y_list)-1, 2):
-                plt.plot([x, -x], [y_list[i], y_list[i+1]], c='black')
-                plt.plot([-x, x], [y_list[i], y_list[i+1]], c='black')
 
-            # save data
-            with open(self.orthogonalPath, 'a', newline='') as file:
-                writer = csv.writer(file)
-                # write center
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([x, y_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([x, y_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x, y_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x, y_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([-x, y_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([-x, y_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x, y_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x, y_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
+            switch = True
+            try:
+                with open(self.orthogonalPath, 'w+', encoding='utf8') as cleanfile:
+                    cleanfile.close()
+            except:
+                switch = False
+                QtWidgets.QMessageBox.about(self, 'Heads up!!!!!', 'Plz close the file!')
 
-            # for upper
-            x_upper_list_p = []
-            x_upper_list_n = []
-            y_upper_list_p = []
-            y_upper_list_n = []
-            for i in range(1, self.n_line + 1):
-                y_upper_p = height//2 + self.n_line // 2 * self.shift
-                y_upper_p = y_upper_p - (i - 1) * self.shift
-                b = y_upper_p - x
-                y_upper_n = y_upper_p - width
-                y_upper_list_n.append(y_upper_n)
-                # print(f"orig y_upper_p: {y_upper_p}\nb: {b}\ny_upper_n: {y_upper_n}")
-                if y_upper_p > height//2:
-                    y_upper_p = height//2
-                    # print(f"modify y_upper_p: {y_upper_p}")
-                    x_upper_p = y_upper_p - b
-                    # print(f"b : {b}")
-                    x_upper_list_p.append(x_upper_p)
-                    y_upper_list_p.append(y_upper_p)
-                else:
-                    # print(f"modify y_upper_p: {y_upper_p}")
-                    x_upper_list_p.append(width//2)
-                    y_upper_list_p.append(y_upper_p)
-            x_upper_list_n = [-x for i in range(self.n_line)]
+            if switch == True:
+                plt.figure(figsize=(6, 8))
+                for i in range(0, len(y_list)-1, 2):
+                    plt.plot([x, -x], [y_list[i], y_list[i+1]], c='black')
+                    plt.plot([-x, x], [y_list[i], y_list[i+1]], c='black')
 
-            # print(f"x_upper_list_p: {x_upper_list_p}\n\
-            #         x_upper_list_n: {x_upper_list_n}\n\
-            #         y_upper_list_p: {y_upper_list_p}\n\
-            #         y_upper_list_n: {y_upper_list_n}")
+                # save data
+                with open(self.orthogonalPath, 'a', encoding='utf8', newline='') as file:
+                    writer = csv.writer(file)
+                    # write center
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([x, y_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([x, y_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x, y_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x, y_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([-x, y_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([-x, y_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x, y_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x, y_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
 
-            y_upper_list = []
-            x_upper_list = []
-            for i in range(len(y_upper_list_p)):
-                y_upper_list.append(y_upper_list_p[i])
-                y_upper_list.append(y_upper_list_n[i])
-                x_upper_list.append(x_upper_list_p[i])
-                x_upper_list.append(x_upper_list_n[i])
+                # for upper
+                x_upper_list_p = []
+                x_upper_list_n = []
+                y_upper_list_p = []
+                y_upper_list_n = []
+                for i in range(1, self.n_line + 1):
+                    y_upper_p = height//2 + self.n_line // 2 * self.shift
+                    y_upper_p = y_upper_p - (i - 1) * self.shift
+                    b = y_upper_p - x
+                    y_upper_n = y_upper_p - width
+                    y_upper_list_n.append(y_upper_n)
+                    # print(f"orig y_upper_p: {y_upper_p}\nb: {b}\ny_upper_n: {y_upper_n}")
+                    if y_upper_p > height//2:
+                        y_upper_p = height//2
+                        # print(f"modify y_upper_p: {y_upper_p}")
+                        x_upper_p = y_upper_p - b
+                        # print(f"b : {b}")
+                        x_upper_list_p.append(x_upper_p)
+                        y_upper_list_p.append(y_upper_p)
+                    else:
+                        # print(f"modify y_upper_p: {y_upper_p}")
+                        x_upper_list_p.append(width//2)
+                        y_upper_list_p.append(y_upper_p)
+                x_upper_list_n = [-x for i in range(self.n_line)]
 
-            for i in range(0, len(x_upper_list), 2):
-                plt.plot(
-                    [x_upper_list[i], x_upper_list[i+1]], 
-                    [y_upper_list[i], y_upper_list[i+1]], 
-                    c='black')
-                plt.plot(
-                    [-x_upper_list[i], -x_upper_list[i+1]], 
-                    [y_upper_list[i], y_upper_list[i+1]], 
-                    c='black')
+                # print(f"x_upper_list_p: {x_upper_list_p}\n\
+                #         x_upper_list_n: {x_upper_list_n}\n\
+                #         y_upper_list_p: {y_upper_list_p}\n\
+                #         y_upper_list_n: {y_upper_list_n}")
 
-            # save data
-            with open(self.orthogonalPath, 'a', newline='') as file:
-                writer = csv.writer(file)
-                # write center
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([-x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
+                y_upper_list = []
+                x_upper_list = []
+                for i in range(len(y_upper_list_p)):
+                    y_upper_list.append(y_upper_list_p[i])
+                    y_upper_list.append(y_upper_list_n[i])
+                    x_upper_list.append(x_upper_list_p[i])
+                    x_upper_list.append(x_upper_list_n[i])
 
-            # for bottom
-            x_bottom_list_p = []
-            x_bottom_list_n = []
-            y_bottom_list_p = []
-            y_bottom_list_n = []
-            for i in range(1, self.n_line + 1):
-                y_bottom_n = -height//2 + self.n_line//2 * self.shift
-                y_bottom_n = y_bottom_n - (i - 1) * self.shift
-                y_bottom_p = y_bottom_n + width
-                y_bottom_list_p.append(y_bottom_p)
-                b = y_bottom_p - x
-                if y_bottom_n < -height//2:
-                    y_bottom_n = -height//2
-                    x_bottom_n = (y_bottom_n - b) 
-                    x_bottom_list_n.append(x_bottom_n)
-                    y_bottom_list_n.append(y_bottom_n)
-                else:
-                    y_bottom_list_n.append(y_bottom_n)
-                    x_bottom_list_n.append(-width//2)
-            x_bottom_list_p = [x for i in range(self.n_line)]
+                for i in range(0, len(x_upper_list), 2):
+                    plt.plot(
+                        [x_upper_list[i], x_upper_list[i+1]], 
+                        [y_upper_list[i], y_upper_list[i+1]], 
+                        c='black')
+                    plt.plot(
+                        [-x_upper_list[i], -x_upper_list[i+1]], 
+                        [y_upper_list[i], y_upper_list[i+1]], 
+                        c='black')
 
-            y_bottom_list = []
-            x_bottom_list = []
-            for i in range(len(y_bottom_list_p)):
-                y_bottom_list.append(y_bottom_list_p[i])
-                y_bottom_list.append(y_bottom_list_n[i])
-                x_bottom_list.append(x_bottom_list_p[i])
-                x_bottom_list.append(x_bottom_list_n[i])
+                # save data
+                with open(self.orthogonalPath, 'a', encoding='utf8', newline='') as file:
+                    writer = csv.writer(file)
+                    # write center
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([-x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
 
-            # print(f"x_bottom_list_p: {x_bottom_list_p}\n\
-            #         x_bottom_list_n: {x_bottom_list_n}\n\
-            #         y_bottom_list_p: {y_bottom_list_p}\n\
-            #         y_bottom_list_n: {y_bottom_list_n}\n")
+                # for bottom
+                x_bottom_list_p = []
+                x_bottom_list_n = []
+                y_bottom_list_p = []
+                y_bottom_list_n = []
+                for i in range(1, self.n_line + 1):
+                    y_bottom_n = -height//2 + self.n_line//2 * self.shift
+                    y_bottom_n = y_bottom_n - (i - 1) * self.shift
+                    y_bottom_p = y_bottom_n + width
+                    y_bottom_list_p.append(y_bottom_p)
+                    b = y_bottom_p - x
+                    if y_bottom_n < -height//2:
+                        y_bottom_n = -height//2
+                        x_bottom_n = (y_bottom_n - b) 
+                        x_bottom_list_n.append(x_bottom_n)
+                        y_bottom_list_n.append(y_bottom_n)
+                    else:
+                        y_bottom_list_n.append(y_bottom_n)
+                        x_bottom_list_n.append(-width//2)
+                x_bottom_list_p = [x for i in range(self.n_line)]
 
-            for i in range(0, len(x_bottom_list), 2):
-                plt.plot(
-                    [x_bottom_list[i], x_bottom_list[i+1]], 
-                    [y_bottom_list[i], y_bottom_list[i+1]], 
-                    c='black')
-                plt.plot(
-                    [-x_bottom_list[i], -x_bottom_list[i+1]], 
-                    [y_bottom_list[i], y_bottom_list[i+1]], 
-                    c='black')
+                y_bottom_list = []
+                x_bottom_list = []
+                for i in range(len(y_bottom_list_p)):
+                    y_bottom_list.append(y_bottom_list_p[i])
+                    y_bottom_list.append(y_bottom_list_n[i])
+                    x_bottom_list.append(x_bottom_list_p[i])
+                    x_bottom_list.append(x_bottom_list_n[i])
 
-            # save data
-            with open(self.orthogonalPath, 'a', newline='') as file:
-                writer = csv.writer(file)
-                # write bottom
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([-x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
+                # print(f"x_bottom_list_p: {x_bottom_list_p}\n\
+                #         x_bottom_list_n: {x_bottom_list_n}\n\
+                #         y_bottom_list_p: {y_bottom_list_p}\n\
+                #         y_bottom_list_n: {y_bottom_list_n}\n")
 
-            plt.show()
+                for i in range(0, len(x_bottom_list), 2):
+                    plt.plot(
+                        [x_bottom_list[i], x_bottom_list[i+1]], 
+                        [y_bottom_list[i], y_bottom_list[i+1]], 
+                        c='black')
+                    plt.plot(
+                        [-x_bottom_list[i], -x_bottom_list[i+1]], 
+                        [y_bottom_list[i], y_bottom_list[i+1]], 
+                        c='black')
+
+                # save data
+                with open(self.orthogonalPath, 'a', encoding='utf8', newline='') as file:
+                    writer = csv.writer(file)
+                    # write bottom
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([-x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+
+                plt.show()
 
     def obliqueLine(self):
         height = self.height - 2 * self.indent
@@ -335,160 +345,169 @@ class Lpg(QtWidgets.QWidget):
                 y_centre_list.append(y_centre_list_p[i])
                 y_centre_list.append(y_centre_list_n[i])
 
-            plt.figure(figsize=(6, 8))
-            for i in range(0, len(y_centre_list)-1, 2):
-                plt.plot([x, -x], [y_centre_list[i], y_centre_list[i+1]], c='black')
-                plt.plot([-x, x], [y_centre_list[i], y_centre_list[i+1]], c='black')
+            switch = True
+            try:
+                with open(self.obliquePath, 'w+', encoding='utf8') as cleanfile:
+                    cleanfile.close()
+            except:
+                switch = False
+                QtWidgets.QMessageBox.about(self, 'Head up!!!!!', 'Plz close the file!')
 
-            # save data
-            with open(self.obliquePath, 'a', newline='') as file:
-                writer = csv.writer(file)
-                # write centre
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([x, y_centre_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([x, y_centre_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x, y_centre_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x, y_centre_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([-x, y_centre_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([-x, y_centre_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x, y_centre_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x, y_centre_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
+            if switch == True:
+                plt.figure(figsize=(6, 8))
+                for i in range(0, len(y_centre_list)-1, 2):
+                    plt.plot([x, -x], [y_centre_list[i], y_centre_list[i+1]], c='black')
+                    plt.plot([-x, x], [y_centre_list[i], y_centre_list[i+1]], c='black')
 
-            # for upper
-            y_upper_list_p = []
-            y_upper_list_n = []
-            y_upper_list = []
-            x_upper_list_p = []
-            x_upper_list_n = []
-            x_upper_list = []
-            y_upper_p = height//2 + self.n_line//2 * self.shift
-            pn_shift = y_centre_list_p[0] - y_centre_list_n[0]
-            for i in range(1, self.n_line+1):
+                # save data
+                with open(self.obliquePath, 'a', encoding='utf8', newline='') as file:
+                    writer = csv.writer(file)
+                    # write centre
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([x, y_centre_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([x, y_centre_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x, y_centre_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x, y_centre_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([-x, y_centre_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([-x, y_centre_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x, y_centre_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x, y_centre_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+
+                # for upper
+                y_upper_list_p = []
+                y_upper_list_n = []
+                y_upper_list = []
+                x_upper_list_p = []
+                x_upper_list_n = []
+                x_upper_list = []
                 y_upper_p = height//2 + self.n_line//2 * self.shift
-                y_upper_p = y_upper_p - (i - 1) * self.shift
-                y_upper_n = y_upper_p - pn_shift
-                y_upper_list_n.append(y_upper_n)
-                b = y_upper_p - y_centre_list_p[self.n_line//2]
-                if y_upper_p > height//2:
-                    y_upper_p = height//2
-                    y_upper_list_p.append(y_upper_p)
-                    x_upper_p = (y_upper_p - b) / a
-                    x_upper_list_p.append(x_upper_p)
-                else:
-                    y_upper_list_p.append(y_upper_p)
-                    x_upper_list_p.append(width//2)
-            x_upper_list_n = [-width//2 for i in range(self.n_line)]
+                pn_shift = y_centre_list_p[0] - y_centre_list_n[0]
+                for i in range(1, self.n_line+1):
+                    y_upper_p = height//2 + self.n_line//2 * self.shift
+                    y_upper_p = y_upper_p - (i - 1) * self.shift
+                    y_upper_n = y_upper_p - pn_shift
+                    y_upper_list_n.append(y_upper_n)
+                    b = y_upper_p - y_centre_list_p[self.n_line//2]
+                    if y_upper_p > height//2:
+                        y_upper_p = height//2
+                        y_upper_list_p.append(y_upper_p)
+                        x_upper_p = (y_upper_p - b) / a
+                        x_upper_list_p.append(x_upper_p)
+                    else:
+                        y_upper_list_p.append(y_upper_p)
+                        x_upper_list_p.append(width//2)
+                x_upper_list_n = [-width//2 for i in range(self.n_line)]
 
-            for i in range(len(y_upper_list_p)):
-                y_upper_list.append(y_upper_list_p[i])
-                y_upper_list.append(y_upper_list_n[i])
-                x_upper_list.append(x_upper_list_p[i])
-                x_upper_list.append(x_upper_list_n[i])
+                for i in range(len(y_upper_list_p)):
+                    y_upper_list.append(y_upper_list_p[i])
+                    y_upper_list.append(y_upper_list_n[i])
+                    x_upper_list.append(x_upper_list_p[i])
+                    x_upper_list.append(x_upper_list_n[i])
 
-            for i in range(0, len(x_upper_list), 2):
-                plt.plot(
-                    [x_upper_list[i], x_upper_list[i+1]], 
-                    [y_upper_list[i], y_upper_list[i+1]], 
-                    c='black')
-                plt.plot(
-                    [-x_upper_list[i], -x_upper_list[i+1]], 
-                    [y_upper_list[i], y_upper_list[i+1]], 
-                    c='black')
+                for i in range(0, len(x_upper_list), 2):
+                    plt.plot(
+                        [x_upper_list[i], x_upper_list[i+1]], 
+                        [y_upper_list[i], y_upper_list[i+1]], 
+                        c='black')
+                    plt.plot(
+                        [-x_upper_list[i], -x_upper_list[i+1]], 
+                        [y_upper_list[i], y_upper_list[i+1]], 
+                        c='black')
 
-            # save data
-            with open(self.obliquePath, 'a', newline='') as file:
-                writer = csv.writer(file)
-                # write upper
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([-x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
+                # save data
+                with open(self.obliquePath, 'a', encoding='utf8', newline='') as file:
+                    writer = csv.writer(file)
+                    # write upper
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([-x_upper_list[i], y_upper_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_upper_list[i], y_upper_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_upper_list[i+1], y_upper_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
 
-            # for bottom
-            y_bottom_list = []
-            y_bottom_list_p = []
-            y_bottom_list_n = []
-            x_bottom_list = []
-            x_bottom_list_p = []
-            x_bottom_list_n = []
-            for i in range(1, self.n_line+1):
-                y_bottom_n = -height//2 + self.n_line//2 * self.shift
-                y_bottom_n = y_bottom_n - (i - 1) * self.shift
-                y_bottom_p = y_bottom_n + pn_shift
-                y_bottom_list_p.append(y_bottom_p)
-                b = y_bottom_p - y_centre_list_p[self.n_line//2]
-                if y_bottom_n < -height//2:
-                    y_bottom_n = -height//2
-                    y_bottom_list_n.append(y_bottom_n)
-                    x_bottom_n = (y_bottom_n - b) / a
-                    x_bottom_list_n.append(x_bottom_n)
-                else:
-                    y_bottom_list_n.append(y_bottom_n)
-                    x_bottom_list_n.append(-width//2)
-                x_bottom_list_p = [width//2 for i in range(self.n_line)]
+                # for bottom
+                y_bottom_list = []
+                y_bottom_list_p = []
+                y_bottom_list_n = []
+                x_bottom_list = []
+                x_bottom_list_p = []
+                x_bottom_list_n = []
+                for i in range(1, self.n_line+1):
+                    y_bottom_n = -height//2 + self.n_line//2 * self.shift
+                    y_bottom_n = y_bottom_n - (i - 1) * self.shift
+                    y_bottom_p = y_bottom_n + pn_shift
+                    y_bottom_list_p.append(y_bottom_p)
+                    b = y_bottom_p - y_centre_list_p[self.n_line//2]
+                    if y_bottom_n < -height//2:
+                        y_bottom_n = -height//2
+                        y_bottom_list_n.append(y_bottom_n)
+                        x_bottom_n = (y_bottom_n - b) / a
+                        x_bottom_list_n.append(x_bottom_n)
+                    else:
+                        y_bottom_list_n.append(y_bottom_n)
+                        x_bottom_list_n.append(-width//2)
+                    x_bottom_list_p = [width//2 for i in range(self.n_line)]
 
-            for i in range(len(y_bottom_list_p)):
-                y_bottom_list.append(y_bottom_list_p[i])
-                y_bottom_list.append(y_bottom_list_n[i])
-                x_bottom_list.append(x_bottom_list_p[i])
-                x_bottom_list.append(x_bottom_list_n[i])
+                for i in range(len(y_bottom_list_p)):
+                    y_bottom_list.append(y_bottom_list_p[i])
+                    y_bottom_list.append(y_bottom_list_n[i])
+                    x_bottom_list.append(x_bottom_list_p[i])
+                    x_bottom_list.append(x_bottom_list_n[i])
 
-            for i in range(0, len(y_bottom_list), 2):
-                plt.plot(
-                    [x_bottom_list[i], x_bottom_list[i+1]], 
-                    [y_bottom_list[i], y_bottom_list[i+1]], 
-                    c='black')
-                plt.plot(
-                    [-x_bottom_list[i], -x_bottom_list[i+1]], 
-                    [y_bottom_list[i], y_bottom_list[i+1]], 
-                    c='black')
+                for i in range(0, len(y_bottom_list), 2):
+                    plt.plot(
+                        [x_bottom_list[i], x_bottom_list[i+1]], 
+                        [y_bottom_list[i], y_bottom_list[i+1]], 
+                        c='black')
+                    plt.plot(
+                        [-x_bottom_list[i], -x_bottom_list[i+1]], 
+                        [y_bottom_list[i], y_bottom_list[i+1]], 
+                        c='black')
 
-            # save data
-            with open(self.obliquePath, 'a', newline='') as file:
-                writer = csv.writer(file)
-                # write bottom
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                for i in range(0, 2*self.n_line, 2):
-                    writer.writerow([-x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
-                    sleep(0.01)
-                    writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
-                    sleep(0.01)
-            plt.show()
+                # save data
+                with open(self.obliquePath, 'a', encoding='utf8', newline='') as file:
+                    writer = csv.writer(file)
+                    # write bottom
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                    for i in range(0, 2*self.n_line, 2):
+                        writer.writerow([-x_bottom_list[i], y_bottom_list[i], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_bottom_list[i], y_bottom_list[i], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 4000, 0, 0, 10, -1])
+                        sleep(0.01)
+                        writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
+                        sleep(0.01)
+                plt.show()
 
     def square(self):
         height = self.height - 2 * self.indent
@@ -550,20 +569,29 @@ class Lpg(QtWidgets.QWidget):
                 break
             else:
                 y_list.append(y)
-            
-        # print(f"y_list: {y_list}")
-        plt.figure(figsize=(6, 8))
-        for i in range(len(y_list)-1):
-            plt.plot([x_list[i], x_list[i+1]], [y_list[i], y_list[i+1]], c='black')
         
-        with open(self.squarePath, 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([x_list[0], y_list[0], 0, 0, 0, 300, -1])
-            for i in range(len(x_list)):
-                writer.writerow([x_list[i], y_list[i], 4000, 0, 0, 10, -1])
-            writer.writerow([x_list[-1], y_list[-1], 0, 0, 0, 300, -1])
+        switch = True
+        try:
+            with open(self.squarePath, 'w+', encoding='utf8') as cleanfile:
+                cleanfile.close()
+        except:
+            switch = False
+            QtWidgets.QMessageBox.about(self, 'Head up!!!!!', 'Plz close the file!')
 
-        plt.show()
+        if switch == True:
+            # print(f"y_list: {y_list}")
+            plt.figure(figsize=(6, 8))
+            for i in range(len(y_list)-1):
+                plt.plot([x_list[i], x_list[i+1]], [y_list[i], y_list[i+1]], c='black')
+            
+            with open(self.squarePath, 'a', encoding='utf8', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow([x_list[0], y_list[0], 0, 0, 0, 300, -1])
+                for i in range(len(x_list)):
+                    writer.writerow([x_list[i], y_list[i], 4000, 0, 0, 10, -1])
+                writer.writerow([x_list[-1], y_list[-1], 0, 0, 0, 300, -1])
+
+            plt.show()
 
     def eye(self):
         # better line#: 33, 55
@@ -589,7 +617,7 @@ class Lpg(QtWidgets.QWidget):
                         x_list.append(x)
                         y_list.append(y)
                 plt.plot(x_list, y_list, c="black")
-                print(f"{j}:\nx_list: {x_list}\ny_list: {y_list}")
+                # print(f"{j}:\nx_list: {x_list}\ny_list: {y_list}")
         plt.show()
 
     def triangle(self):
@@ -625,7 +653,7 @@ class Lpg(QtWidgets.QWidget):
             for i in range(len(y_list)-1):
                 plt.plot([x_list[i]-width//2, x_list[i+1]-width//2], [y_list[i]-height//2, y_list[i+1]-height//2], c='black')
 
-            with open(self.trianglePath, 'a', newline='') as file:
+            with open(self.trianglePath, 'a', encoding='utf8', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow([x_list[0]-width//2, y_list[0]-height//2, 0, 0, 0, 300, -1])
                 for i in range(len(x_list)):
