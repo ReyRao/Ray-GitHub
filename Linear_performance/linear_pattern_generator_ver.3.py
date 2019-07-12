@@ -8,6 +8,7 @@
 #
 # to create linear performance drawing coordinate
 
+
 import sys
 import matplotlib.pyplot as plt
 import csv
@@ -568,20 +569,22 @@ class Lpg(QtWidgets.QWidget):
         # better line#: 33, 55
         height = self.height - 2 * self.indent
         width = self.width - 2 * self.indent
+        shift = self.width//150
+        n_line = shift//26
         # a = self.width // 2
         # b = self.height // 2
-        l = np.linspace(-math.pi, math.pi, 500)
+        l = np.linspace(-math.pi, math.pi, 1000)
         
         plt.figure(figsize=(6, 8))
-        for j in range(1, self.n_line + 1):
+        for j in range(1, n_line + 1):
             x_list = []
             y_list = []
-            a = width // 2 - (j - 1) * self.shift * 3
-            b = height // 2 - (j - 1) * self.shift * 3
+            a = width // 2 - (j - 1) * shift * 3
+            b = height // 2 - (j - 1) * shift * 3
             if abs(a) <= width // 2 and abs(b) <= height // 2:
                 for i in l:
                     x = a * math.cos(i) 
-                    y = b * math.sin(i) * (1/self.n_line) * (j - 1) 
+                    y = b * math.sin(i) * (1/n_line) * (j - 1) 
                     if abs(x) <= width//2 and abs(y) <= height//2:
                         x_list.append(x)
                         y_list.append(y)
@@ -635,10 +638,10 @@ class Lpg(QtWidgets.QWidget):
 class Ui_Form(Lpg):
     def __init__(self):
         Lpg.__init__(self)
-        
+
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(500, 300)
+        Form.resize(457, 271)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -715,6 +718,11 @@ class Ui_Form(Lpg):
         self.verticalLayout.addWidget(self.btn_triangle)
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem3)
+        self.btn_cyberEye = QtWidgets.QPushButton(Form)
+        self.btn_cyberEye.setObjectName("btn_cyberEye")
+        self.verticalLayout.addWidget(self.btn_cyberEye)
+        spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem4)
         self.btn_exit = QtWidgets.QPushButton(Form)
         self.btn_exit.setObjectName("btn_exit")
         self.verticalLayout.addWidget(self.btn_exit)
@@ -737,6 +745,7 @@ class Ui_Form(Lpg):
         self.btn_oblique_pattern.setText(_translate("Form", "Plot Oblique Pattern"))
         self.btn_square.setText(_translate("Form", "Plot Square Pattern"))
         self.btn_triangle.setText(_translate("Form", "Plot Triangle Pattern"))
+        self.btn_cyberEye.setText(_translate("Form", "The Cyber Eye"))
         self.btn_exit.setText(_translate("Form", "Exit"))
 
         self.btn_indent.clicked.connect(self.getIndent)
@@ -750,6 +759,7 @@ class Ui_Form(Lpg):
         self.btn_oblique_pattern.clicked.connect(self.obliqueLine)
         self.btn_triangle.clicked.connect(self.triangle)
         self.btn_square.clicked.connect(self.square)
+        self.btn_cyberEye.clicked.connect(self.eye)
         
         self.edit_height.setReadOnly(True)
         self.edit_width.setReadOnly(True)
