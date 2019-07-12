@@ -37,8 +37,8 @@ class Lpg(QtWidgets.QWidget):
         self.line_switch = True
         self.link = None
 
-    def textValue(self, value):
-        return self.value
+    # def textValue(self, value):
+    #     return self.value
 
     def exitApp(self):
         exit()
@@ -118,14 +118,14 @@ class Lpg(QtWidgets.QWidget):
             self.line_switch = False
 
     def orthogonalLine(self):
-        self.height = self.height - 2 * self.indent
-        self.width = self.width - 2 * self.indent
+        height = self.height - 2 * self.indent
+        width = self.width - 2 * self.indent
         # self.defaultWarining()
 
         if self.line_switch == True:
             a = 1
             b = 0
-            x = self.width // 2
+            x = width // 2
             y = a * x + b
             y_list_p = []
             y_list_n = []
@@ -178,14 +178,14 @@ class Lpg(QtWidgets.QWidget):
             y_upper_list_p = []
             y_upper_list_n = []
             for i in range(1, self.n_line + 1):
-                y_upper_p = self.height//2 + self.n_line // 2 * self.shift
+                y_upper_p = height//2 + self.n_line // 2 * self.shift
                 y_upper_p = y_upper_p - (i - 1) * self.shift
                 b = y_upper_p - x
-                y_upper_n = y_upper_p - self.width
+                y_upper_n = y_upper_p - width
                 y_upper_list_n.append(y_upper_n)
                 # print(f"orig y_upper_p: {y_upper_p}\nb: {b}\ny_upper_n: {y_upper_n}")
-                if y_upper_p > self.height//2:
-                    y_upper_p = self.height//2
+                if y_upper_p > height//2:
+                    y_upper_p = height//2
                     # print(f"modify y_upper_p: {y_upper_p}")
                     x_upper_p = y_upper_p - b
                     # print(f"b : {b}")
@@ -193,7 +193,7 @@ class Lpg(QtWidgets.QWidget):
                     y_upper_list_p.append(y_upper_p)
                 else:
                     # print(f"modify y_upper_p: {y_upper_p}")
-                    x_upper_list_p.append(self.width//2)
+                    x_upper_list_p.append(width//2)
                     y_upper_list_p.append(y_upper_p)
             x_upper_list_n = [-x for i in range(self.n_line)]
 
@@ -249,19 +249,19 @@ class Lpg(QtWidgets.QWidget):
             y_bottom_list_p = []
             y_bottom_list_n = []
             for i in range(1, self.n_line + 1):
-                y_bottom_n = -self.height//2 + self.n_line//2 * self.shift
+                y_bottom_n = -height//2 + self.n_line//2 * self.shift
                 y_bottom_n = y_bottom_n - (i - 1) * self.shift
-                y_bottom_p = y_bottom_n + self.width
+                y_bottom_p = y_bottom_n + width
                 y_bottom_list_p.append(y_bottom_p)
                 b = y_bottom_p - x
-                if y_bottom_n < -self.height//2:
-                    y_bottom_n = -self.height//2
+                if y_bottom_n < -height//2:
+                    y_bottom_n = -height//2
                     x_bottom_n = (y_bottom_n - b) 
                     x_bottom_list_n.append(x_bottom_n)
                     y_bottom_list_n.append(y_bottom_n)
                 else:
                     y_bottom_list_n.append(y_bottom_n)
-                    x_bottom_list_n.append(-self.width//2)
+                    x_bottom_list_n.append(-width//2)
             x_bottom_list_p = [x for i in range(self.n_line)]
 
             y_bottom_list = []
@@ -313,14 +313,14 @@ class Lpg(QtWidgets.QWidget):
             plt.show()
 
     def obliqueLine(self):
-        self.height = self.height - 2 * self.indent
-        self.width = self.width - 2 * self.indent
+        height = self.height - 2 * self.indent
+        width = self.width - 2 * self.indent
 
         # self.defaultWarining()
 
         if self.line_switch == True:
-            x = self.width // 2
-            y = self.height // 4
+            x = width // 2
+            y = height // 4
             b = 0
             a = (y - b) / x
             # for centre
@@ -372,23 +372,23 @@ class Lpg(QtWidgets.QWidget):
             x_upper_list_p = []
             x_upper_list_n = []
             x_upper_list = []
-            y_upper_p = self.height//2 + self.n_line//2 * self.shift
+            y_upper_p = height//2 + self.n_line//2 * self.shift
             pn_shift = y_centre_list_p[0] - y_centre_list_n[0]
             for i in range(1, self.n_line+1):
-                y_upper_p = self.height//2 + self.n_line//2 * self.shift
+                y_upper_p = height//2 + self.n_line//2 * self.shift
                 y_upper_p = y_upper_p - (i - 1) * self.shift
                 y_upper_n = y_upper_p - pn_shift
                 y_upper_list_n.append(y_upper_n)
                 b = y_upper_p - y_centre_list_p[self.n_line//2]
-                if y_upper_p > self.height//2:
-                    y_upper_p = self.height//2
+                if y_upper_p > height//2:
+                    y_upper_p = height//2
                     y_upper_list_p.append(y_upper_p)
                     x_upper_p = (y_upper_p - b) / a
                     x_upper_list_p.append(x_upper_p)
                 else:
                     y_upper_list_p.append(y_upper_p)
-                    x_upper_list_p.append(self.width//2)
-            x_upper_list_n = [-self.width//2 for i in range(self.n_line)]
+                    x_upper_list_p.append(width//2)
+            x_upper_list_n = [-width//2 for i in range(self.n_line)]
 
             for i in range(len(y_upper_list_p)):
                 y_upper_list.append(y_upper_list_p[i])
@@ -437,20 +437,20 @@ class Lpg(QtWidgets.QWidget):
             x_bottom_list_p = []
             x_bottom_list_n = []
             for i in range(1, self.n_line+1):
-                y_bottom_n = -self.height//2 + self.n_line//2 * self.shift
+                y_bottom_n = -height//2 + self.n_line//2 * self.shift
                 y_bottom_n = y_bottom_n - (i - 1) * self.shift
                 y_bottom_p = y_bottom_n + pn_shift
                 y_bottom_list_p.append(y_bottom_p)
                 b = y_bottom_p - y_centre_list_p[self.n_line//2]
-                if y_bottom_n < -self.height//2:
-                    y_bottom_n = -self.height//2
+                if y_bottom_n < -height//2:
+                    y_bottom_n = -height//2
                     y_bottom_list_n.append(y_bottom_n)
                     x_bottom_n = (y_bottom_n - b) / a
                     x_bottom_list_n.append(x_bottom_n)
                 else:
                     y_bottom_list_n.append(y_bottom_n)
-                    x_bottom_list_n.append(-self.width//2)
-                x_bottom_list_p = [self.width//2 for i in range(self.n_line)]
+                    x_bottom_list_n.append(-width//2)
+                x_bottom_list_p = [width//2 for i in range(self.n_line)]
 
             for i in range(len(y_bottom_list_p)):
                 y_bottom_list.append(y_bottom_list_p[i])
@@ -493,62 +493,62 @@ class Lpg(QtWidgets.QWidget):
             plt.show()
 
     def square(self):
-        self.height = self.height - 2 * self.indent
-        self.width = self.width - 2 * self.indent
-        x = -self.width // 2
-        y = -self.height // 2
+        height = self.height - 2 * self.indent
+        width = self.width - 2 * self.indent
+        x = -width // 2
+        y = -height // 2
         x_list = []
         y_list = []
         x_list.append(x)
         y_list.append(y)
         # print(f"width//2: {self.width//2}")
         # print(f"shift: {self.shift}")
-        for i in range(1, 10000):
-            if abs(x) > self.width//2:
+        for i in range(1, 99999):
+            if abs(x) > width//2:
                 break
             else:
                 x = x + self.shift * i
-            if abs(x) > self.width//2:
+            if abs(x) > width//2:
                 break
             else:
                 x_list.append(x)
-                x = self.width//2
-            if abs(x) > self.width//2:
+                x = width//2
+            if abs(x) > width//2:
                 break
             else:
                 x_list.append(x)
-                x = self.width//2 - self.shift * i
-            if abs(x) > self.width//2:
+                x = width//2 - self.shift * i
+            if abs(x) > width//2:
                 break
             else:
                 x_list.append(x)
-                x = -self.width//2
-            if abs(x) > self.width//2:
+                x = -width//2
+            if abs(x) > width//2:
                 break
             else:
                 x_list.append(x)
             
 
-            if abs(y) > self.height//2:
+            if abs(y) > height//2:
                 break
             else:
-                y = self.height//2
-            if abs(y) > self.height//2:
-                break
-            else:
-                y_list.append(y)
-                y = self.height//2 - self.shift * i
-            if abs(y) > self.height//2:
+                y = height//2
+            if abs(y) > height//2:
                 break
             else:
                 y_list.append(y)
-                y = -self.height//2
-            if abs(y) > self.height//2:
+                y = height//2 - self.shift * i
+            if abs(y) > height//2:
                 break
             else:
                 y_list.append(y)
-                y = -self.height//2 + self.shift * i
-            if abs(y) > self.height//2:
+                y = -height//2
+            if abs(y) > height//2:
+                break
+            else:
+                y_list.append(y)
+                y = -height//2 + self.shift * i
+            if abs(y) > height//2:
                 break
             else:
                 y_list.append(y)
@@ -569,8 +569,8 @@ class Lpg(QtWidgets.QWidget):
 
     def eye(self):
         # better line#: 33, 55
-        self.height = self.height - 2 * self.indent
-        self.width = self.width - 2 * self.indent
+        height = self.height - 2 * self.indent
+        width = self.width - 2 * self.indent
         # a = self.width // 2
         # b = self.height // 2
         l = np.linspace(-math.pi, math.pi, 500)
@@ -579,13 +579,13 @@ class Lpg(QtWidgets.QWidget):
         for j in range(1, self.n_line + 1):
             x_list = []
             y_list = []
-            a = self.width // 2 - (j - 1) * self.shift * 3
-            b = self.height // 2 - (j - 1) * self.shift * 3
-            if abs(a) <= self.width // 2 and abs(b) <= self.height // 2:
+            a = width // 2 - (j - 1) * self.shift * 3
+            b = height // 2 - (j - 1) * self.shift * 3
+            if abs(a) <= width // 2 and abs(b) <= height // 2:
                 for i in l:
                     x = a * math.cos(i) 
                     y = b * math.sin(i) * (1/self.n_line) * (j - 1) 
-                    if abs(x) <= self.width//2 and abs(y) <= self.height//2:
+                    if abs(x) <= width//2 and abs(y) <= height//2:
                         x_list.append(x)
                         y_list.append(y)
                 plt.plot(x_list, y_list, c="black")
@@ -593,37 +593,46 @@ class Lpg(QtWidgets.QWidget):
         plt.show()
 
     def triangle(self):
-        self.height = self.height - 2 * self.indent
-        self.width = self.width - 2 * self.indent
+        height = self.height - 2 * self.indent
+        width = self.width - 2 * self.indent
         x_list = []
         y_list = []
+        switch = True
 
-        for i in range(self.width//self.shift + 1):
+        for i in range(width//self.shift + 1):
             x_list.append(self.shift * i)
             if i%2 == 0:
                 y_list.append(0)
             else:
-                y_list.append(self.height)
+                y_list.append(height)
 
-        for i in range(self.height//self.shift + 1):
+        for i in range(height//self.shift + 1):
             y_list.append(self.shift * i)
             if i%2 == 0:
                 x_list.append(0)
             else:
-                x_list.append(self.width)
+                x_list.append(width)
         
-        plt.figure(figsize=(6, 8))
-        for i in range(len(y_list)-1):
-            plt.plot([x_list[i], x_list[i+1]], [y_list[i], y_list[i+1]], c='black')
-        
-        with open(self.trianglePath, 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([x_list[0], y_list[0], 0, 0, 0, 300, -1])
-            for i in range(len(x_list)):
-                writer.writerow([x_list[i], y_list[i], 4000, 0, 0, 10, -1])
-            writer.writerow([x_list[-1], y_list[-1], 0, 0, 0, 300, -1])
+        try:
+            with open(self.trianglePath, 'w+', encoding='utf8') as cleanfile:
+                cleanfile.close()
+        except:
+            QtWidgets.QMessageBox.about(self, 'Heads up!!!!!', 'Plz close the file!')
+            switch = False
 
-        plt.show()
+        if switch == True:
+            plt.figure(figsize=(6, 8))
+            for i in range(len(y_list)-1):
+                plt.plot([x_list[i]-width//2, x_list[i+1]-width//2], [y_list[i]-height//2, y_list[i+1]-height//2], c='black')
+
+            with open(self.trianglePath, 'a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow([x_list[0]-width//2, y_list[0]-height//2, 0, 0, 0, 300, -1])
+                for i in range(len(x_list)):
+                    writer.writerow([x_list[i]-width//2, y_list[i]-height//2, 4000, 0, 0, 10, -1])
+                writer.writerow([x_list[-1]-width//2, y_list[-1]-height//2, 0, 0, 0, 300, -1])
+
+            plt.show()
 
 
 class Ui_Form(Lpg):
