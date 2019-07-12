@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
-    <height>143</height>
+    <width>457</width>
+    <height>271</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,19 +98,6 @@
       <layout class="QHBoxLayout" name="horizontalLayout_3"/>
      </item>
      <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
       <widget class="QPushButton" name="btn_orthogonal_pattern">
        <property name="text">
         <string>Plot Orthogonal Pattern</string>
@@ -151,14 +138,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_exit">
+      <widget class="QPushButton" name="btn_square">
        <property name="text">
-        <string>Exit</string>
+        <string>Plot Square Pattern</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="verticalSpacer_4">
+      <spacer name="verticalSpacer_5">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -169,6 +156,33 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_triangle">
+       <property name="text">
+        <string>Plot Triangle Pattern</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_exit">
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

@@ -1,4 +1,11 @@
-# !usr/bin/python3
+# !usr/bin/python3.6.8
+#
+# -*- coding: utf-8 -*-
+#
+# Form implementation generated from reading ui file 'linear_pattern_generator.ui'
+#
+# Created by: PyQt5 UI code generator 5.12.2
+#
 # to create linear performance drawing coordinate
 
 import sys
@@ -26,6 +33,7 @@ class Lpg(QtWidgets.QWidget):
         self.orthogonalPath = "./orthogonal.csv"
         self.obliquePath = "./oblique.csv"
         self.squarePath = "./square.csv"
+        self.trianglePath = "./triangle.csv"
         self.line_switch = True
         self.link = None
 
@@ -608,14 +616,20 @@ class Lpg(QtWidgets.QWidget):
         for i in range(len(y_list)-1):
             plt.plot([x_list[i], x_list[i+1]], [y_list[i], y_list[i+1]], c='black')
         
-        plt.show()
+        with open(self.trianglePath, 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([x_list[0], y_list[0], 0, 0, 0, 300, -1])
+            for i in range(len(x_list)):
+                writer.writerow([x_list[i], y_list[i], 4000, 0, 0, 10, -1])
+            writer.writerow([x_list[-1], y_list[-1], 0, 0, 0, 300, -1])
 
+        plt.show()
 
 
 class Ui_Form(Lpg):
     def __init__(self):
         Lpg.__init__(self)
-
+        
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(500, 300)
@@ -631,6 +645,7 @@ class Ui_Form(Lpg):
         self.btn_height.setObjectName("btn_height")
         self.verticalLayout_2.addWidget(self.btn_height)
         self.edit_height = QtWidgets.QLineEdit(Form)
+        self.edit_height.setText("")
         self.edit_height.setObjectName("edit_height")
         self.verticalLayout_2.addWidget(self.edit_height)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
@@ -674,29 +689,35 @@ class Ui_Form(Lpg):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.verticalLayout.addLayout(self.horizontalLayout_3)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem)
         self.btn_orthogonal_pattern = QtWidgets.QPushButton(Form)
         self.btn_orthogonal_pattern.setObjectName("btn_orthogonal_pattern")
         self.verticalLayout.addWidget(self.btn_orthogonal_pattern)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem1)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
         self.btn_oblique_pattern = QtWidgets.QPushButton(Form)
         self.btn_oblique_pattern.setObjectName("btn_oblique_pattern")
         self.verticalLayout.addWidget(self.btn_oblique_pattern)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem1)
+        self.btn_square = QtWidgets.QPushButton(Form)
+        self.btn_square.setObjectName("btn_square")
+        self.verticalLayout.addWidget(self.btn_square)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem2)
+        self.btn_triangle = QtWidgets.QPushButton(Form)
+        self.btn_triangle.setObjectName("btn_triangle")
+        self.verticalLayout.addWidget(self.btn_triangle)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem3)
         self.btn_exit = QtWidgets.QPushButton(Form)
         self.btn_exit.setObjectName("btn_exit")
         self.verticalLayout.addWidget(self.btn_exit)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem3)
         self.horizontalLayout.addLayout(self.verticalLayout)
-
-        self.defaultValue()
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+
+        self.defaultValue()
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -705,9 +726,11 @@ class Ui_Form(Lpg):
         self.btn_width.setText(_translate("Form", "Set Width"))
         self.btn_indent.setText(_translate("Form", "Set Indent"))
         self.btn_shift.setText(_translate("Form", "Set Shift"))
-        self.btn_n_lines.setText(_translate("Form", "Set # of line"))
+        self.btn_n_lines.setText(_translate("Form", "Set # of Lines"))
         self.btn_orthogonal_pattern.setText(_translate("Form", "Plot Orthogonal Pattern"))
         self.btn_oblique_pattern.setText(_translate("Form", "Plot Oblique Pattern"))
+        self.btn_square.setText(_translate("Form", "Plot Square Pattern"))
+        self.btn_triangle.setText(_translate("Form", "Plot Triangle Pattern"))
         self.btn_exit.setText(_translate("Form", "Exit"))
 
         self.btn_indent.clicked.connect(self.getIndent)
@@ -718,9 +741,10 @@ class Ui_Form(Lpg):
         self.btn_exit.clicked.connect(self.exitApp)
         
         self.btn_orthogonal_pattern.clicked.connect(self.orthogonalLine)
-        # self.btn_oblique_pattern.clicked.connect(self.obliqueLine)
-        self.btn_oblique_pattern.clicked.connect(self.triangle)
-
+        self.btn_oblique_pattern.clicked.connect(self.obliqueLine)
+        self.btn_triangle.clicked.connect(self.triangle)
+        self.btn_square.clicked.connect(self.square)
+        
         self.edit_height.setReadOnly(True)
         self.edit_width.setReadOnly(True)
         self.edit_shift.setReadOnly(True)
