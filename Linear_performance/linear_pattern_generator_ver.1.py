@@ -581,35 +581,10 @@ class Lpg(QtWidgets.QWidget):
                         x_list.append(x)
                         y_list.append(y)
                 plt.plot(x_list, y_list, c="black")
-                print(f"{j}:\nx_list: {x_list}\ny_list: {y_list}")
+                # print(f"{j}:\nx_list: {x_list}\ny_list: {y_list}")
         plt.show()
 
-    def triangle(self):
-        self.height = self.height - 2 * self.indent
-        self.width = self.width - 2 * self.indent
-        x_list = []
-        y_list = []
-
-        for i in range(self.width//self.shift + 1):
-            x_list.append(self.shift * i)
-            if i%2 == 0:
-                y_list.append(0)
-            else:
-                y_list.append(self.height)
-
-        for i in range(self.height//self.shift + 1):
-            y_list.append(self.shift * i)
-            if i%2 == 0:
-                x_list.append(0)
-            else:
-                x_list.append(self.width)
-        
-        plt.figure(figsize=(6, 8))
-        for i in range(len(y_list)-1):
-            plt.plot([x_list[i], x_list[i+1]], [y_list[i], y_list[i+1]], c='black')
-        
-        plt.show()
-
+    
 
 
 class Ui_Form(Lpg):
@@ -719,7 +694,7 @@ class Ui_Form(Lpg):
         
         self.btn_orthogonal_pattern.clicked.connect(self.orthogonalLine)
         # self.btn_oblique_pattern.clicked.connect(self.obliqueLine)
-        self.btn_oblique_pattern.clicked.connect(self.triangle)
+        self.btn_oblique_pattern.clicked.connect(self.eye)
 
         self.edit_height.setReadOnly(True)
         self.edit_width.setReadOnly(True)

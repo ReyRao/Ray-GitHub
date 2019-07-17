@@ -21,7 +21,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Lpg(QtWidgets.QWidget):
-    def __init__(self, width=156200, height=208600, indent=0, shift=1050, n_line=5):
+    def __init__(self, width=156200, height=208600, indent=1000, shift=1050, n_line=7):
         # width=156200, height=208600, indent=1000, shift=1050, n_line=7
         QtWidgets.QWidget.__init__(self)
         self.setupUi(self)
@@ -119,6 +119,11 @@ class Lpg(QtWidgets.QWidget):
         height = self.height - 2 * self.indent
         width = self.width - 2 * self.indent
         # self.defaultWarining()
+        switch = True
+
+        if height < width:
+            QtWidgets.QMessageBox.warning(self, "Severe ERROR!!!!", "\"longer side\" should be height!")
+            switch = False
 
         if self.line_switch == True:
             a = 1
@@ -142,8 +147,7 @@ class Lpg(QtWidgets.QWidget):
                 y_list.append(y_list_n[i])
             # print(f"y center list: {y_list}\n")
             # print(f"b: {b}")
-
-            switch = True
+            
             try:
                 with open(self.orthogonalPath, 'w+', encoding='utf8') as cleanfile:
                     cleanfile.close()
@@ -317,7 +321,6 @@ class Lpg(QtWidgets.QWidget):
                         sleep(0.01)
                         writer.writerow([-x_bottom_list[i+1], y_bottom_list[i+1], 0, 0, 0, 300, -1])
                         sleep(0.01)
-
                 plt.show()
 
     def obliqueLine(self):
@@ -325,6 +328,11 @@ class Lpg(QtWidgets.QWidget):
         width = self.width - 2 * self.indent
 
         # self.defaultWarining()
+        switch = True
+
+        if height < width:
+            QtWidgets.QMessageBox.warning(self, "Severe ERROR!!!!", "\"longer side\" should be height!")
+            switch = False
 
         if self.line_switch == True:
             x = width // 2
@@ -345,7 +353,6 @@ class Lpg(QtWidgets.QWidget):
                 y_centre_list.append(y_centre_list_p[i])
                 y_centre_list.append(y_centre_list_n[i])
 
-            switch = True
             try:
                 with open(self.obliquePath, 'w+', encoding='utf8') as cleanfile:
                     cleanfile.close()
@@ -545,7 +552,6 @@ class Lpg(QtWidgets.QWidget):
             else:
                 x_list.append(x)
             
-
             if abs(y) > height//2:
                 break
             else:
@@ -581,17 +587,17 @@ class Lpg(QtWidgets.QWidget):
         if switch == True:
             # print(f"y_list: {y_list}")
             plt.figure(figsize=(6, 8))
-            for i in range(len(y_list)-1):
+            for i in range(min(len(x_list), len(y_list))-1):
                 plt.plot([x_list[i], x_list[i+1]], [y_list[i], y_list[i+1]], c='black')
             
+            plt.show()
             with open(self.squarePath, 'a', encoding='utf8', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow([x_list[0], y_list[0], 0, 0, 0, 300, -1])
-                for i in range(len(x_list)):
+                
+                for i in range(min(len(x_list), len(y_list))):
                     writer.writerow([x_list[i], y_list[i], 4000, 0, 0, 10, -1])
                 writer.writerow([x_list[-1], y_list[-1], 0, 0, 0, 300, -1])
-
-            plt.show()
 
     def eye(self):
         # better line#: 33, 55
@@ -623,24 +629,12 @@ class Lpg(QtWidgets.QWidget):
     def triangle(self):
         height = self.height - 2 * self.indent
         width = self.width - 2 * self.indent
-        x_list = []
-        y_list = []
+        x_list_v = []
+        x_list_h = []
+        y_list_v = []
+        y_list_h = []
         switch = True
 
-        for i in range(width//self.shift + 1):
-            x_list.append(self.shift * i)
-            if i%2 == 0:
-                y_list.append(0)
-            else:
-                y_list.append(height)
-
-        for i in range(height//self.shift + 1):
-            y_list.append(self.shift * i)
-            if i%2 == 0:
-                x_list.append(0)
-            else:
-                x_list.append(width)
-        
         try:
             with open(self.trianglePath, 'w+', encoding='utf8') as cleanfile:
                 cleanfile.close()
@@ -650,16 +644,40 @@ class Lpg(QtWidgets.QWidget):
 
         if switch == True:
             plt.figure(figsize=(6, 8))
-            for i in range(len(y_list)-1):
-                plt.plot([x_list[i]-width//2, x_list[i+1]-width//2], [y_list[i]-height//2, y_list[i+1]-height//2], c='black')
+
+            for i in range(width//self.shift + 1):
+                x_list_v.append(self.shift * i)
+                if i%2 == 0:
+                    y_list_v.append(0)
+                else:
+                    y_list_v.append(height)
+
+            for i in range(min(len(x_list_v), len(y_list_v))-1):
+                plt.plot([x_list_v[i]-width//2, x_list_v[i+1]-width//2], [y_list_v[i]-height//2, y_list_v[i+1]-height//2], c='black')
 
             with open(self.trianglePath, 'a', encoding='utf8', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow([x_list[0]-width//2, y_list[0]-height//2, 0, 0, 0, 300, -1])
-                for i in range(len(x_list)):
-                    writer.writerow([x_list[i]-width//2, y_list[i]-height//2, 4000, 0, 0, 10, -1])
-                writer.writerow([x_list[-1]-width//2, y_list[-1]-height//2, 0, 0, 0, 300, -1])
+                writer.writerow([x_list_v[0]-width//2, y_list_v[0]-height//2, 0, 0, 0, 300, -1])
+                for i in range(min(len(x_list_v), len(y_list_v))):
+                    writer.writerow([x_list_v[i]-width//2, y_list_v[i]-height//2, 4000, 0, 0, 10, -1])
+                writer.writerow([x_list_v[-1]-width//2, y_list_v[-1]-height//2, 0, 0, 0, 300, -1])
 
+            for i in range(height//self.shift + 1):
+                y_list_h.append(self.shift * i)
+                if i%2 == 0:
+                    x_list_h.append(0)
+                else:
+                    x_list_h.append(width)
+            
+            for i in range(min(len(x_list_h), len(y_list_h))-1):
+                plt.plot([x_list_h[i]-width//2, x_list_h[i+1]-width//2], [y_list_h[i]-height//2, y_list_h[i+1]-height//2], c='black')
+
+            with open(self.trianglePath, 'a', encoding='utf8', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow([x_list_h[0]-width//2, y_list_h[0]-height//2, 0, 0, 0, 300, -1])
+                for i in range(min(len(x_list_h), len(y_list_h))):
+                    writer.writerow([x_list_h[i]-width//2, y_list_h[i]-height//2, 4000, 0, 0, 10, -1])
+                writer.writerow([x_list_h[-1]-width//2, y_list_h[-1]-height//2, 0, 0, 0, 300, -1])
             plt.show()
 
 
