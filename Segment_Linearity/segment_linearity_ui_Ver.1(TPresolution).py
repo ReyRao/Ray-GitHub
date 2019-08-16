@@ -3,7 +3,8 @@
 # to extract a certain segment of line and then calculate the linearity
 
 import sys
-import numpy as np
+# import numpy as np
+from numpy import polyfit, asarray
 
 from PyQt5 import QtCore, QtWidgets
 
@@ -132,28 +133,47 @@ class Ui_Form(QtWidgets.QWidget):
         return switch
 
     def setXY(self):
-        self.x_orginal = np.asarray(self.x_orginal)
-        self.y_orginal = np.asarray(self.y_orginal)
+        ok = True
+        try:
+            self.x_orginal = asarray(self.x_orginal)
+            self.y_orginal = asarray(self.y_orginal)
+        except:
+            QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer Only Please!')
+            ok = False
 
-        if self.editYBottom.text() == '':
-            self.y_bottom = min(self.y_orginal)
-        else:
-            self.y_bottom = int(self.editYBottom.text())
+        if ok:
+            if self.editYBottom.text() == '':
+                self.y_bottom = min(self.y_orginal)
+            else:
+                try:
+                    self.y_bottom = int(self.editYBottom.text())
+                except:
+                    QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer only!')
 
-        if self.editYCeiling.text() == '':
-            self.y_ceiling = max(self.y_orginal)
-        else:
-            self.y_ceiling = int(self.editYCeiling.text())
+            if self.editYCeiling.text() == '':
+                self.y_ceiling = max(self.y_orginal)
+            else:
+                try:
+                    self.y_ceiling = int(self.editYCeiling.text())
+                except:
+                    QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer only!')
 
-        if self.editXBottom.text() == '':
-            self.x_bottom = min(self.x_orginal)
-        else:
-            self.x_bottom = int(self.editXBottom.text())
+            if self.editXBottom.text() == '':
+                self.x_bottom = min(self.x_orginal)
+            else:
+                try:
+                    self.x_bottom = int(self.editXBottom.text())
+                except:
+                    QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer only!')
 
-        if self.editXCeiling.text() == '':
-            self.x_ceiling = max(self.x_orginal)
-        else:
-            self.x_ceiling = int(self.editXCeiling.text())
+            if self.editXCeiling.text() == '':
+                self.x_ceiling = max(self.x_orginal)
+            else:
+                try:
+                    self.x_ceiling = int(self.editXCeiling.text())
+                except:
+                    QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer only!')
+        return ok
 
     def linearity_(self, data, bottom, ceiling):
         x = []
@@ -177,12 +197,12 @@ class Ui_Form(QtWidgets.QWidget):
                 y = self.y_orginal[min_index : max_index]
                 x = self.x_orginal[min_index : max_index]
 
-                x = np.asarray(x)
-                y = np.asarray(y)
+                x = asarray(x)
+                y = asarray(y)
                 print(f'x: {len(x)}, x[0]: {x[0]}, x[-1]: {x[-1]}')
                 print(f'y: {len(y)}, y[0]: {y[0]}, y[-1]: {y[-1]}')
 
-                fit = np.polyfit(x, y, 1, full=True)[0]
+                fit = polyfit(x, y, 1, full=True)[0]
                 a = fit[0]
                 b = fit[1]
                 d0 = abs(y - a * x - b) / (1 + a ** 2) ** (.5)
@@ -221,22 +241,23 @@ class Ui_Form(QtWidgets.QWidget):
             for i in range(len(line)):
                 self.x_orginal.append(int(line[i][3].split(',')[5]))
                 self.y_orginal.append(int(line[i][3].split(',')[6]))
+                    
         # print(f'self.x_orginal: {self.x_orginal[0]}, {self.x_orginal[-1]}, len: {len(self.x_orginal)}')
         # print(f'self.y_orginal: {self.y_orginal[0]}, {self.y_orginal[-1]}, len: {len(self.y_orginal)}')
 
-        self.setXY()
+        ok = self.setXY()
+        if ok:
+            if self.editXBottom.text() == '' and self.editXCeiling.text() == '':
+                self.inverse_(self.y_bottom, self.y_ceiling)
+                self.linearity_(self.y_orginal, self.y_bottom, self.y_ceiling)
 
-        if self.editXBottom.text() == '' and self.editXCeiling.text() == '':
-            self.inverse_(self.y_bottom, self.y_ceiling)
-            self.linearity_(self.y_orginal, self.y_bottom, self.y_ceiling)
+            elif self.editYBottom.text() == '' and self.editYCeiling.text() == '':
+                self.inverse_(self.x_bottom, self.x_ceiling)
+                self.linearity_(self.x_orginal, self.x_bottom, self.x_ceiling)
 
-        elif self.editYBottom.text() == '' and self.editYCeiling.text() == '':
-            self.inverse_(self.x_bottom, self.x_ceiling)
-            self.linearity_(self.x_orginal, self.x_bottom, self.x_ceiling)
-
-        else:
-            self.editLinearityShow.setText("")
-            QtWidgets.QMessageBox.about(self, 'Decision!', "Just choose one! Don't be so greedy!")
+            else:
+                self.editLinearityShow.setText("")
+                QtWidgets.QMessageBox.about(self, 'Decision!', "Just choose one! Don't be so greedy!")
 
 
 def main():
