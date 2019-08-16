@@ -1,0 +1,103 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'MD_segment_linearity.ui'
+#
+# Created by: PyQt5 UI code generator 5.12.2
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class Ui_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(214, 161)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setObjectName("label")
+        self.verticalLayout_2.addWidget(self.label)
+        self.editXBottom = QtWidgets.QLineEdit(Form)
+        self.editXBottom.setAlignment(QtCore.Qt.AlignCenter)
+        self.editXBottom.setObjectName("editXBottom")
+        self.verticalLayout_2.addWidget(self.editXBottom)
+        self.horizontalLayout_2.addLayout(self.verticalLayout_2)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout_3.addWidget(self.label_2)
+        self.editXCeiling = QtWidgets.QLineEdit(Form)
+        self.editXCeiling.setAlignment(QtCore.Qt.AlignCenter)
+        self.editXCeiling.setObjectName("editXCeiling")
+        self.verticalLayout_3.addWidget(self.editXCeiling)
+        self.horizontalLayout_2.addLayout(self.verticalLayout_3)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.label_5 = QtWidgets.QLabel(Form)
+        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_5.setObjectName("label_5")
+        self.verticalLayout.addWidget(self.label_5)
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_3.setObjectName("label_3")
+        self.verticalLayout_4.addWidget(self.label_3)
+        self.editYBottom = QtWidgets.QLineEdit(Form)
+        self.editYBottom.setAlignment(QtCore.Qt.AlignCenter)
+        self.editYBottom.setObjectName("editYBottom")
+        self.verticalLayout_4.addWidget(self.editYBottom)
+        self.horizontalLayout_3.addLayout(self.verticalLayout_4)
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout_5.addWidget(self.label_4)
+        self.editYCeiling = QtWidgets.QLineEdit(Form)
+        self.editYCeiling.setAlignment(QtCore.Qt.AlignCenter)
+        self.editYCeiling.setObjectName("editYCeiling")
+        self.verticalLayout_5.addWidget(self.editYCeiling)
+        self.horizontalLayout_3.addLayout(self.verticalLayout_5)
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.line = QtWidgets.QFrame(Form)
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout.addWidget(self.line)
+        self.pbtnLinearity = QtWidgets.QPushButton(Form)
+        self.pbtnLinearity.setObjectName("pbtnLinearity")
+        self.verticalLayout.addWidget(self.pbtnLinearity)
+        self.editLinearityShow = QtWidgets.QLineEdit(Form)
+        self.editLinearityShow.setAlignment(QtCore.Qt.AlignCenter)
+        self.editLinearityShow.setObjectName("editLinearityShow")
+        self.verticalLayout.addWidget(self.editLinearityShow)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
+        self.horizontalLayout.addLayout(self.verticalLayout)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.label.setText(_translate("Form", "X Bottom Limit"))
+        self.label_2.setText(_translate("Form", "X Ceiling Limit"))
+        self.label_5.setText(_translate("Form", "OR"))
+        self.label_3.setText(_translate("Form", "Y Bottom Limit"))
+        self.label_4.setText(_translate("Form", "Y Ceiling Limit"))
+        self.pbtnLinearity.setText(_translate("Form", "Calculate Linearity"))
+
+

@@ -774,10 +774,12 @@ class Ui_Form(Lpg):
         self.verticalLayout.addWidget(self.btn_exit)
         self.horizontalLayout.addLayout(self.verticalLayout)
 
+        self.defaultValue()
+        
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
-        self.defaultValue()
+        # self.defaultValue()
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate

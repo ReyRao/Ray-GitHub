@@ -2,8 +2,8 @@
 # from PyQt5 import QtCore, QtGui, QtWidgets
 
 # class inputdialogdemo(QtWidgets.QWidget):
-#    def __init__(self, parent = None):
-#       super(inputdialogdemo, self).__init__(parent)
+#    def __init__(self):
+#       QtWidgets.QWidget.__init__(self)
 		
 #       layout = QtWidgets.QFormLayout()
 #       self.btn = QtWidgets.QPushButton("Choose from list")
@@ -57,6 +57,88 @@
 
 #############################################################
 
+# from PyQt5.QtCore import QObject, pyqtSignal
+# from PyQt5 import QtWidgets, QtCore, QtGui
+# import sys
+
+# class Ui(QtWidgets.QWidget, QObject):
+#    # Define a new signal called 'trigger' that has no arguments.
+#    trigger = pyqtSignal()
+
+#    def __init__(self):
+#       # QtWidgets.QWidget.__init__(self)
+#       # self.setup()
+#       # def __init__(self, parent=None):
+#       QtWidgets.QWidget.__init__(self)
+
+#       nameLabel = QtWidgets.QLabel("Name:")
+#       self.nameLine = QtWidgets.QLineEdit()
+
+#       addressLabel = QtWidgets.QLabel("Address:")
+#       self.addressText = QtWidgets.QTextEdit()
+
+#       mainLayout = QtWidgets.QGridLayout()
+#       mainLayout.addWidget(nameLabel, 0, 0)
+#       mainLayout.addWidget(self.nameLine, 0, 1)
+#       mainLayout.addWidget(addressLabel, 1, 0)
+#       mainLayout.addWidget(self.addressText, 1, 1)
+
+#       self.setLayout(mainLayout)
+#       self.setWindowTitle("Simple Address Book") 
+
+# def setup(self):
+#    layout = QtWidgets.QFormLayout()
+#    self.btn = QtWidgets.QPushButton("Just push here!")
+#    self.btn.clicked.connect(self.trigger)
+
+#    layout.addRow(self.btn)
+
+#    self.setLayout(layout)
+#    self.setWindowTitle("Just Window Title.")
+
+# def connect_and_emit_trigger(self):
+#    # Connect the trigger signal to a slot.
+#    self.trigger.connect(self.handle_trigger)
+
+#    # Emit the signal.
+#    self.trigger.emit()
+
+# def handle_trigger(self):
+#    # Show that the slot has been called.
+
+#    print("trigger signal received")
+
+
+# class Foo(QObject):
+
+#    # Define a new signal called 'trigger' that has no arguments.
+#    trigger = pyqtSignal()
+
+#    def connect_and_emit_trigger(self):
+#       # Connect the trigger signal to a slot.
+#       self.trigger.connect(self.handle_trigger)
+
+#       # Emit the signal.
+#       self.trigger.emit()
+
+#    def handle_trigger(self):
+#       # Show that the slot has been called.
+
+#       print("trigger signal received")
+
+
+# def main():
+#    app = QtWidgets.QApplication(sys.argv)
+#    ex = Ui()
+#    ex.show()
+#    sys.exit(app.exec())
+
+
+# if __name__ == "__main__":
+#    main()
+
+
+###########################################################
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -322,46 +404,119 @@
 
 
 ######################################################################
+# import sys
+# from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox
+# from PyQt5.QtGui import QIcon
+# from PyQt5.QtCore import pyqtSlot
+
+# class App(QMainWindow):
+
+#     def __init__(self):
+#         super().__init__()
+#         self.title = 'PyQt5 textbox - pythonspot.com'
+#         self.left = 300
+#         self.top = 300
+#         self.width = 400
+#         self.height = 140
+#         self.initUI()
+
+#     def initUI(self):
+#         self.setWindowTitle(self.title)
+#         self.setGeometry(self.left, self.top, self.width, self.height)
+
+#         # Create textbox
+#         self.textbox = QLineEdit(self)
+#         self.textbox.move(20, 20)
+#         self.textbox.resize(280,40)
+
+#         # Create a button in the window
+#         self.button = QPushButton('Show text', self)
+#         self.button.move(20,80)
+
+#         # connect button to function on_click
+#         self.button.clicked.connect(self.on_click)
+#         self.show()
+
+#     # @pyqtSlot()
+#     def on_click(self):
+#         textboxValue = self.textbox.text()
+#         QMessageBox.about(self, 'title here', textboxValue)
+#         self.textbox.setText("")
+
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     ex = App()
+#     sys.exit(app.exec_())
+
+#########################################################
+
+# import matplotlib.pyplot as plt
+# import numpy as np
+
+# plt.figure(figsize=(8, 6))
+# x = np.linspace(9, 100, 100)
+# y = ((x + 16) / 116) ** 3 * 100
+
+# x1 = np.linspace(0, 7, 100)
+# y1 = (((x + 16) / 116) - 16/116) * 3 * (6/29)**2
+
+# x0 = np.linspace(0, 100, 100)
+# y0 = x0
+
+# plt.plot(x1, y1, c='r')
+# plt.plot(x, y, c='r')
+# plt.plot(x0, y0, c='b')
+# plt.show()
+
+
+#################################################################
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
 
-class App(QMainWindow):
+class App(QWidget):
 
-   def __init__(self):
-      super().__init__()
-      self.title = 'PyQt5 textbox - pythonspot.com'
-      self.left = 10
-      self.top = 10
-      self.width = 400
-      self.height = 140
-      self.initUI()
-   
-   def initUI(self):
-      self.setWindowTitle(self.title)
-      self.setGeometry(self.left, self.top, self.width, self.height)
-   
-      # Create textbox
-      self.textbox = QLineEdit(self)
-      self.textbox.move(20, 20)
-      self.textbox.resize(280,40)
-      
-      # Create a button in the window
-      self.button = QPushButton('Show text', self)
-      self.button.move(20,80)
-      
-      # connect button to function on_click
-      self.button.clicked.connect(self.on_click)
-      self.show()
-   
-   @pyqtSlot()
-   def on_click(self):
-      textboxValue = self.textbox.text()
-      QMessageBox.question(self, 'Message - pythonspot.com', "You typed: " + textboxValue, QMessageBox.Ok, QMessageBox.Ok)
-      self.textbox.setText("")
+    def __init__(self):
+        super().__init__()
+        self.title = 'PyQt5 file dialogs - pythonspot.com'
+        self.left = 10
+        self.top = 10
+        self.width = 640
+        self.height = 480
+        self.initUI()
+    
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+        
+        self.openFileNameDialog()
+        self.openFileNamesDialog()
+        self.saveFileDialog()
+        
+        self.show()
+    
+    def openFileNameDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Python Files (*.py)", options=options)
+        if fileName:
+            print(fileName)
+    
+    def openFileNamesDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        files, _ = QFileDialog.getOpenFileNames(self,"QFileDialog.getOpenFileNames()", "","All Files (*);;Python Files (*.py)", options=options)
+        if files:
+            print(files)
+    
+    def saveFileDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()","","All Files (*);;Text Files (*.txt)", options=options)
+        if fileName:
+            print(fileName)
 
 if __name__ == '__main__':
-   app = QApplication(sys.argv)
-   ex = App()
-   sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    ex = App()
+    sys.exit(app.exec_())

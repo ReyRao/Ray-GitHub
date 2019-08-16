@@ -33,8 +33,8 @@ class Coordinate():
         for j in index_row[1:]:
             if self.delete_num >= j:
                 switch = False
-                print("Data isn't enough! OR Delete too many ponts!")
-                raise TypeError("Data isn't enough! OR Delete too many ponts!")
+                print("Data isn't enough! OR Delete too many points!")
+                raise TypeError("Data isn't enough! OR Delete too many points!")
             else:
                 switch = True
         if switch == True:
