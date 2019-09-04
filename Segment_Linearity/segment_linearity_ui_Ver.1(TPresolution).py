@@ -138,6 +138,7 @@ class Ui_Form(QtWidgets.QWidget):
             self.x_orginal = asarray(self.x_orginal)
             self.y_orginal = asarray(self.y_orginal)
         except:
+            self.editLinearityShow.setText("")
             QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer Only Please!')
             ok = False
 
@@ -148,6 +149,7 @@ class Ui_Form(QtWidgets.QWidget):
                 try:
                     self.y_bottom = int(self.editYBottom.text())
                 except:
+                    self.editLinearityShow.setText("")
                     QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer only!')
 
             if self.editYCeiling.text() == '':
@@ -156,6 +158,7 @@ class Ui_Form(QtWidgets.QWidget):
                 try:
                     self.y_ceiling = int(self.editYCeiling.text())
                 except:
+                    self.editLinearityShow.setText("")
                     QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer only!')
 
             if self.editXBottom.text() == '':
@@ -164,6 +167,7 @@ class Ui_Form(QtWidgets.QWidget):
                 try:
                     self.x_bottom = int(self.editXBottom.text())
                 except:
+                    self.editLinearityShow.setText("")
                     QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer only!')
 
             if self.editXCeiling.text() == '':
@@ -172,6 +176,7 @@ class Ui_Form(QtWidgets.QWidget):
                 try:
                     self.x_ceiling = int(self.editXCeiling.text())
                 except:
+                    self.editLinearityShow.setText("")
                     QtWidgets.QMessageBox.warning(self, 'Warning!', 'Integer only!')
         return ok
 
@@ -220,11 +225,10 @@ class Ui_Form(QtWidgets.QWidget):
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         self.path, _ = QtWidgets.QFileDialog.getOpenFileName(  self,
-                                                    "QFileDialog.getOpenFileName()",
+                                                    "Choose Your Data",
                                                     "",
-                                                    "All Files (*);;Python Files (*.py)",
+                                                    "All Files (*);;Text (*.txt);;Excel (*.csv, *.xls, *.xlsm, *.xlsx)",
                                                     options = options)
-        # self.path = str(fileName)
         print(self.path)
 
 
