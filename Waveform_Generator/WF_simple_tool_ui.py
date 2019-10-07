@@ -1,10 +1,22 @@
 # -*- coding: utf-8 -*-
 
+<<<<<<< HEAD
+=======
+# Form implementation generated from reading ui file 'WF_simple_toole.ui'
+#
+# Created by: PyQt5 UI code generator 5.12.2
+#
+# WARNING! All changes made in this file will be lost!
+
+>>>>>>> 0b75f92f364ec0d73eabb1c9fe33c74aefb2edd6
 import sys
 
 import pandas as pd
 import matplotlib.pyplot as plt
+<<<<<<< HEAD
 import numpy as np
+=======
+>>>>>>> 0b75f92f364ec0d73eabb1c9fe33c74aefb2edd6
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -56,14 +68,30 @@ class Ui_Form(QtWidgets.QWidget):
                                                                 "",
                                                                 "All Files (*);;Excel (*.xls, *.xlsm, *.xlsx)",
                                                                 options = options)
+<<<<<<< HEAD
 
     def draw(self):
         df = pd.read_excel(self.path, header=None, encoding='utf-8')
         
+=======
+        # print(self.path)
+
+    def draw(self):
+        df = pd.read_excel(self.path, header=None, encoding='utf-8')
+        # plt.figure(figsize=(6, 8))
+        # for i in range(len(df.index)):
+        #     print(df.iloc[i, 2:])
+        
+        #     plt.plot(range(len(df.iloc[i, 2:])), df.iloc[i, 2:])
+        # plt.plot(range(len(df.iloc[i, 2:])), [0]*len(df.iloc[i, 2:]), '--')
+        # plt.ylim(-1.5, 1.5)
+        # print(df)
+>>>>>>> 0b75f92f364ec0d73eabb1c9fe33c74aefb2edd6
         ax = []
         for i in range(len(df.columns)):
             ax.append(f'ax{i}')
 
+<<<<<<< HEAD
         plt.style.use('seaborn-whitegrid')
         _, ax = plt.subplots(   len(df.columns), sharex=True, sharey=True,
                                 gridspec_kw={'hspace': 0}, figsize=(9, 4))
@@ -106,6 +134,20 @@ class Ui_Form(QtWidgets.QWidget):
         plt.show()
 
 
+=======
+        _, ax = plt.subplots(len(df.columns), sharex=True, sharey=True, gridspec_kw={'hspace': 0}, figsize=(15, 6))
+
+        for i in range(len(df.columns)):
+            x = range(len(df.iloc[2:, i]))
+            ax[i].plot(x, df.iloc[2:, i], label=f'{df.iloc[0, i]}->{df.iloc[1, i]}')
+            ax[i].legend(loc=0)
+            ax[i].set_xticks(x)
+
+        ax[0].set_title("Visualised WF")
+        plt.tight_layout()
+        plt.show()
+
+>>>>>>> 0b75f92f364ec0d73eabb1c9fe33c74aefb2edd6
 def main():
     app = QtWidgets.QApplication(sys.argv)
     ex = Ui_Form()
