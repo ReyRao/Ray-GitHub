@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -59,7 +60,6 @@ class Ui_Form(QtWidgets.QWidget):
 
     def draw(self):
         df = pd.read_excel(self.path, header=None, encoding='utf-8')
-        
         ax = []
         for i in range(len(df.columns)):
             ax.append(f'ax{i}')
@@ -104,7 +104,6 @@ class Ui_Form(QtWidgets.QWidget):
         ax[0].set_title("Visualised WFs")
         plt.tight_layout()
         plt.show()
-
 
 
 def main():

@@ -1,3 +1,4 @@
+
 # !usr/bin/python3
 # -*- coding: utf-8 -*-
 # to extract EMR Coil Noise data
@@ -93,6 +94,7 @@ class Ui_Form(QtWidgets.QWidget):
                     writer = csv.writer(datafile)
                     writer.writerows([[file_name[12:-17]]])
                     writer.writerows([data])
+        QtWidgets.QMessageBox.about(self, 'Finished', 'Finished')
 
 
 def main():
